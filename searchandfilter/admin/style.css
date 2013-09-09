@@ -1,0 +1,41 @@
+
+.tablenav
+{
+	display:none;
+}
+
+.of-caption
+{
+	margin-top: 13px;
+	margin-bottom: 23px;
+	padding: 10px;
+	overflow: hidden;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: 1px solid #eee;
+	background: #fbfbfb;
+}
+
+.wp-list-table
+{
+	margin-top: 23px;
+	margin-bottom: 23px;
+}
+
+.wp-list-table td
+{
+	padding-bottom:10px;
+	padding-top:10px;
+	
+}
+
+.of-url, .of-url .number
+{
+	color:#d14;
+}
+
+pre code
+{
+	background-color:#eeeeee;
+	font-size:12px;
+}
