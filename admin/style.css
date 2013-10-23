@@ -39,3 +39,24 @@ pre code
 	background-color:#eeeeee;
 	font-size:12px;
 }
+
+.column-info
+{
+	width:65%;
+}
+
+.column-options
+{
+	width:15%;
+}
+
+pre .keyword
+{
+	color:#dd1144;
+}
+
+code.large
+{
+	font-size:12px;
+	line-height:20px;
+}
