@@ -296,7 +296,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					else {
 						$post_time = strtotime($post_date[0]);
 						$query->set('year', date('Y', $post_time));
-						$query->set('nummonth', date('m', $post_time));
+						$query->set('monthnum', date('m', $post_time));
 						$query->set('day', date('d', $post_time));
 					}
 				}
