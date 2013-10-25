@@ -15,6 +15,9 @@ You can search by Category, Tag, Custom Taxonomy or any combination of these eas
 
 ## Changelog
 
+### 1.1.3
+ - Added support for `post_date` to be displayed either as `date` or `daterange` (WP 3.7+) type.
+
 ### 1.1.2
  - Added support for all public and custom post types (the attachment post type is excluded) - all post types can be user searchable or predfined and hidden from the user. This allows for users to add multiple search widgets to their site which work on specific post types independantly from eachother.
  - Added offical updated documentation, created and moved to Search &amp; Filter Docs

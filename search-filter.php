@@ -150,7 +150,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				if(isset($types[$i]))
 				{
 
-					if(($types[$i]=="select")||($types[$i]=="checkbox")||($types[$i]=="radio")||($types[$i]=="datepicker"))
+					if(($types[$i]=="select")||($types[$i]=="checkbox")||($types[$i]=="radio")||($types[$i]=="date")||($types[$i]=="daterange"))
 					{
 						$types[$i] =  $types[$i];
 					}
@@ -161,7 +161,13 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				}
 				else
 				{
-					$types[$i] =  "select";
+					if($taxonomies[$i] == 'post_date')
+					{
+						$types[$i] =  "date";
+					}
+					else {
+						$types[$i] =  "select";
+					}
 				}
 
 
@@ -277,12 +283,22 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 			if(isset($wp_query->query['post_date']))
 			{
-				$post_date = esc_attr(urlencode($wp_query->query['post_date']));
+				$post_date = explode("+", esc_attr(urlencode($wp_query->query['post_date'])));
 				if(!empty($post_date)) {
-					$post_time = strtotime($post_date);
-					$query->set('year', date('Y', $post_time));
-					$query->set('nummonth', date('m', $post_time));
-					$query->set('day', date('d', $post_time));
+					if (count($post_date) > 1 && $post_date[0] != $post_date[1]) {
+						$date_query = array(
+							'after' => date('Y-m-d 00:00:00', strtotime($post_date[0])),
+							'before' => date('Y-m-d 23:59:59', strtotime($post_date[1])),
+							'inclusive' => true,
+						);
+						$query->set('date_query', array($date_query));
+					}
+					else {
+						$post_time = strtotime($post_date[0]);
+						$query->set('year', date('Y', $post_time));
+						$query->set('nummonth', date('m', $post_time));
+						$query->set('day', date('d', $post_time));
+					}
 				}
 			}
 
@@ -381,7 +397,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			$post_date = '';
 			if(isset($wp_query->query['post_date']))
 			{
-				$post_date = esc_attr(urlencode($wp_query->query['post_date']));
+				$post_date = explode("+", esc_attr(urlencode($wp_query->query['post_date'])));
 			}
 			$this->defaults[SEARCHANDFILTER_FPRE.'post_date'] = $post_date;
 
@@ -735,7 +751,6 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 						foreach($taxonomies as $taxonomy)
 						{
-
 							if($taxonomy == "post_types")
 							{//build taxonomy array
 
@@ -833,7 +848,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 							}
 							else if($taxonomy == 'post_date') {
 
-								$taxonomychildren[] = array();
+								$taxonomychildren = array();
 
 								$taxonomychildren = (object)$taxonomychildren;
 
@@ -854,9 +869,15 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 								$defaultval = "";
 
-								if($types[$i]=="datepicker")
+								if($types[$i]=="date")
 								{
-									$returnvar .= $this->generate_datepicker($taxonomychildren, $taxonomy, $this->tagid);
+									$returnvar .= $this->generate_date($taxonomychildren, $taxonomy, $this->tagid);
+								}
+								if($types[$i]=="daterange")
+								{
+									$returnvar .= $this->generate_date($taxonomychildren, $taxonomy, 0);
+									$returnvar .= "</li><li>";
+									$returnvar .= $this->generate_date($taxonomychildren, $taxonomy, 1);
 								}
 								$returnvar .= "</li>";
 							}
@@ -1060,12 +1081,12 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			return $returnvar;
 		}
 
-		public function generate_datepicker($dropdata, $name, $currentid = 0, $labels = null, $defaultval = "0")
+		public function generate_date($dropdata, $name, $currentid = 0, $labels = null, $defaultval = "0")
 		{
 			$returnvar = '';
 
 			$defaults = $this->defaults[SEARCHANDFILTER_FPRE.$name];
-			$returnvar .= '<label><input class="postform" type="text" name="'.SEARCHANDFILTER_FPRE.$name.'[]" value="'.$defaults.'" /></label>';
+			$returnvar .= '<label><input class="postform" type="date" name="'.SEARCHANDFILTER_FPRE.$name.'[]" value="' . $defaults[$currentid] . '" /></label>';
 
 			return $returnvar;
 		}

@@ -1,6 +1,6 @@
 === Search & Filter ===
 Contributors: DesignsAndCode
-Donate link: 
+Donate link:
 Tags: category, filter, taxonomy, search, wordpress, post type
 Requires at least: 3.5
 Tested up to: 3.6
@@ -45,6 +45,9 @@ Search & Filter uses the Taxonomy object and its label properly, this means when
 4. Example of Search & Filter using a post type filter
 
 == Changelog ==
+
+= 1.1.3 =
+* Added support for `post_date` to be displayed either as `date` or `daterange` (WP 3.7+) type.
 
 = 1.1.2 =
 * Added support for all public and custom post types (the `attachment` post type is excluded) - all post types can be user searchable or predfined and hidden from the user.  This allows for users to add multiple search widgets to their site which work on specific post types independantly from eachother.
