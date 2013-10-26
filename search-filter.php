@@ -1093,7 +1093,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			$returnvar = '';
 
 			$defaults = $this->defaults[SEARCHANDFILTER_FPRE.$name];
-			$returnvar .= '<label><input class="postform" type="date" name="'.SEARCHANDFILTER_FPRE.$name.'[]" value="' . $defaults[$currentid] . '" /></label>';
+			$returnvar .= '<input class="postform" type="date" name="'.SEARCHANDFILTER_FPRE.$name.'[]" value="' . $defaults[$currentid] . '" />';
 
 			return $returnvar;
 		}
