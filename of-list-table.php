@@ -199,14 +199,16 @@ class OF_Variable_List_Table extends WP_List_Table {
 			"ID"			=> $counter,
 			"name"			=> "type",
 			"defaultval"	=> "<code class='string large'>select</code>",
-			"options"		=> "<em>Comma seperated list of any of the types found below:</em><br /><br /><code class='string large'>select</code><br /><code class='string large'>checkbox</code><br /><code class='string large'>radio</code><br /><code class='string large'>date</code><br /><code class='string large'>daterange</code>&nbsp;<small>(WP 3.7+)</small>",
+			"options"		=> "<em>Comma seperated list of any of the types found below:</em><br /><br /><code class='string large'>select</code><br /><code class='string large'>wp_dropdown</code><br /><code class='string large'>checkbox</code><br /><code class='string large'>radio</code><br /><code class='string large'>date</code><br /><code class='string large'>daterange</code>&nbsp;<small>(WP 3.7+)</small>",
 			"info"			=> "The order of values in this comma seperated list needs to match the taxonomies list. <br /><br />To display categories, tags and post formats, as a `select` dropdown, radio buttons and checkboxes, we must put them in the order we need:
 			<br /><pre><code class='string'>[searchandfilter taxonomies=\"category,post_tag,post_format\" type=\"select,checkbox,radio\"]</code></pre>
 			If any taxonomies are left unspecified they well default to `select` dropdowns:
 			<br /><pre><code class='string'>[searchandfilter taxonomies=\"category,post_tag,post_format\" type=\"select,checkbox\"]</code></pre>
 			With this example using just \"select,checkbox\", the post format (being the third, not provided parameter) will be displayed as a `select` dropdown.<br /><br />
 
-			If the `type` argument is ommited completely all taxonomies will be displayed as `select` dropdowns, except `post_date` which will default to `date`."
+			If the `type` argument is ommited completely all taxonomies will be displayed as `select` dropdowns, except `post_date` which will default to `date`.<br /><br />
+
+			You might want to use the `wp_dropdown` type to output a `select` dropdown with indented hierarchical structure."
 		);
 		$counter++;
 

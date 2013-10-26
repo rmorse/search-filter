@@ -150,7 +150,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				if(isset($types[$i]))
 				{
 
-					if(($types[$i]=="select")||($types[$i]=="checkbox")||($types[$i]=="radio")||($types[$i]=="date")||($types[$i]=="daterange"))
+					if(($types[$i]=="select")||($types[$i]=="wp_dropdown")||($types[$i]=="checkbox")||($types[$i]=="radio")||($types[$i]=="date")||($types[$i]=="daterange"))
 					{
 						$types[$i] =  $types[$i];
 					}
@@ -901,11 +901,20 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 										$returnvar .= "<h4>".$taxonomydata->labels->{$labels[$i]}."</h4>";
 									}
 
-									$taxonomychildren = get_categories('name=of'.$taxonomy.'&taxonomy='.$taxonomy);
+									$args = array(
+										'name' => 'of' . $taxonomy,
+										'taxonomy' => $taxonomy,
+										'hierarchical' => true,
+									);
+									$taxonomychildren = get_categories($args);
 
 									if($types[$i]=="select")
 									{
 										$returnvar .= $this->generate_select($taxonomychildren, $taxonomy, $this->tagid, $taxonomydata->labels);
+									}
+									else if($types[$i]=="wp_dropdown")
+									{
+										$returnvar .= $this->generate_wp_dropdown($args, $taxonomy, $this->tagid, $taxonomydata->labels);
 									}
 									else if($types[$i]=="checkbox")
 									{
@@ -931,6 +940,27 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 						$returnvar .= "</ul>";
 					$returnvar .= '</div>
 				</form>';
+
+			return $returnvar;
+		}
+		public function generate_wp_dropdown($args, $name, $currentid = 0, $labels = null, $defaultval = "0")
+		{
+			$returnvar = '';
+
+			$args['echo'] = false;
+			$args['show_option_all'] = $labels->all_items != "" ? $labels->all_items : 'All ' . $labels->name;
+
+			$defaults = $this->defaults[SEARCHANDFILTER_FPRE . $name];
+			if (is_array($defaults)) {
+				if (count($defaults) == 1) {
+					$args['selected'] = $defaults[0];
+				}
+			}
+			else {
+				$args['selected'] = $defaultval;
+			}
+
+			$returnvar .= wp_dropdown_categories($args);
 
 			return $returnvar;
 		}
