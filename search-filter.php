@@ -286,18 +286,25 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				$post_date = explode("+", esc_attr(urlencode($wp_query->query['post_date'])));
 				if(!empty($post_date)) {
 					if (count($post_date) > 1 && $post_date[0] != $post_date[1]) {
-						$date_query = array(
-							'after' => date('Y-m-d 00:00:00', strtotime($post_date[0])),
-							'before' => date('Y-m-d 23:59:59', strtotime($post_date[1])),
-							'inclusive' => true,
-						);
-						$query->set('date_query', array($date_query));
+						$date_query = array();
+						if (!empty($post_date[0])) {
+							$date_query['after'] = date('Y-m-d 00:00:00', strtotime($post_date[0]));
+						}
+						if (!empty($post_date[1])) {
+							$date_query['before'] = date('Y-m-d 23:59:59', strtotime($post_date[1]));
+						}
+						if (!empty($date_query)) {
+							$date_query['inclusive'] = true;
+							$query->set('date_query', array($date_query));
+						}
 					}
 					else {
-						$post_time = strtotime($post_date[0]);
-						$query->set('year', date('Y', $post_time));
-						$query->set('monthnum', date('m', $post_time));
-						$query->set('day', date('d', $post_time));
+						if (!empty($post_date[0])) {
+							$post_time = strtotime($post_date[0]);
+							$query->set('year', date('Y', $post_time));
+							$query->set('monthnum', date('m', $post_time));
+							$query->set('day', date('d', $post_time));
+						}
 					}
 				}
 			}
