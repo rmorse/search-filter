@@ -10,13 +10,23 @@ body
 }
 .searchandfilter ul
 {
+	margin-left: 0;
 	display:inline-block;
 }
 .searchandfilter li
 {
 	list-style: none;
 	display:inline-block;
-	padding-right:10px;
+	padding-right:0.15em;
+}
+.searchandfilter input
+{
+	font-size: 0.75em;
+}
+.searchandfilter select
+{
+	font-size: 0.75em;
+	height: 2.25em;
 }
 
 /* If in a widget area make a single column by adding display block  */
