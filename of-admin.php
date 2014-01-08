@@ -46,9 +46,15 @@
 		echo "<h3>About</h3>";
 		echo '<div class="of-caption">
 				Search &amp; Filter is a simple search and filtering plugin for Wordpress brought to you by <a href="http://www.designsandcode.com" target="_blank">Designs &amp; Code</a>.<br /><br />
-				It is essentially an advancement of the Wordpress search box, adding taxonomy filters to really refine your searches!<br /><br />
-				You can search by Category, Tag, Custom Taxonomy or any combination of these easily - you can even remove the search box and simply use it as a filtering system for your posts and pages.
+				It is essentially an advancement of the WordPress search box, adding taxonomy and post type filters to really refine your searches.<br /><br />
+				You can search by Category, Tag, Custom Taxonomy, Post Type or any combination of these easily - you can even remove the search box and simply use it as a filtering system for your posts and pages.  Taxonomies and Post Types can be displayed as dropdown selects, checkboxes or radio buttons.
 			</div>';
+		echo "<h3>Documentation</h3>";
+		echo '<div class="of-caption">
+				Advanced documentation and examples has now moved - <a href="http://docs.designsandcode.com/search-filter/" target="_blank">find it on our official Search &amp; Filter Plugin Documentation page</a>.<br /><br />
+				Please find below documentation to get you started, more examples can be found at the above link.
+			</div>';
+		
 		echo "<h3>How To Use</h3>";
 		echo '<div class="of-caption">
 				To display Search &amp; Filter all you need to do is a use a shortcode:<br />
@@ -63,7 +69,7 @@
 			</div>';
 		
 		
-		echo "<h3>Variables</h3>";
+		echo "<h3>Arguments</h3>";
 		
 		//display table
 		$ofVarListTable = new OF_Variable_List_Table();
@@ -76,6 +82,13 @@
 		$ofTaxListTable = new OF_Taxonomy_List_Table();
 		$ofTaxListTable->prepare_items();
 		$ofTaxListTable->display();
+		
+		echo "<h3>Your Public Post Types</h3>";
+		echo '<div class="of-caption"><strong>Note:</strong> the <code>attachment</code> post type is not available in this list.</div>';
+		//Prepare Taxonomy elements
+		$ofPostTypeTable = new OF_Post_Type_Table();
+		$ofPostTypeTable->prepare_items();
+		$ofPostTypeTable->display();
 		
 		echo "<h3>Styling</h3>";
 		echo '<div class="of-caption">
@@ -102,8 +115,9 @@
 		echo "<h3>Links</h3>";
 		echo '<div class="of-caption">
 				<ul>
-					<li><a href="http://www.designsandcode.com/447/wordpress-search-filter-plugin-for-taxonomies/" target="_blank">Plugin Tutorial and Support Page</a></li>
-					<li><a href="http://wordpress.org/plugins/search-filter" target="_blank">Plugin on WordPress.org</a> (waiting for approval)</li>
+					<li><a href="http://www.designsandcode.com/447/wordpress-search-filter-plugin-for-taxonomies/" target="_blank">Plugin Support Page &amp; Discussion</a></li>
+					<li><a href="http://docs.designsandcode.com/search-filter/" target="_blank">Plugin Documentation</a></li>
+					<li><a href="http://wordpress.org/plugins/search-filter" target="_blank">Plugin on WordPress.org</a></li>
 					<li><a href="https://github.com/rmorse/wp-search-filter" target="_blank">Plugin on Github</a></li>
 				</ul>
 			</div>';
