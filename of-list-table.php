@@ -187,72 +187,94 @@ class OF_Variable_List_Table extends WP_List_Table {
 
 		$this->taxonomy_data[] = array(
 			"ID"			=> $counter,
-			"name"			=> "taxonomies",
+			"name"			=> "fields",
 			"defaultval"	=> "&nbsp;",
-			"options"		=> "<em>Comma seperated list of any taxonomy names found in the Public Taxonomies table below.</em><br /><br /><strong>Update:</strong> You can now also add <code class='string'>post_type</code> to this list to display options for post types and <code class='string'>post_date</code> for a post date field.",
-			"info"			=> "Example using all your public taxonomies (copy &amp; paste!):<pre><code class='string'>[searchandfilter taxonomies=\"".$fulltaxonomylist."\"]</code></pre>"
+			"options"		=> "<em>Comma seperated list of any field names and Public Taxonomies:</em><br /><br />search<br />post_date<br />post_types<br /><em>*public taxonomy names</em>",
+			"info"			=> "Example using all your public taxonomies (copy &amp; paste!):<pre><code class='string'>[searchandfilter taxonomies=\"search,".$fulltaxonomylist."\"]</code></pre>"
 		);
 		$counter++;
 
 
 		$this->taxonomy_data[] = array(
 			"ID"			=> $counter,
-			"name"			=> "type",
+			"name"			=> "types",
 			"defaultval"	=> "<code class='string large'>select</code>",
-			"options"		=> "<em>Comma seperated list of any of the types found below:</em><br /><br /><code class='string large'>select</code><br /><code class='string large'>wp_dropdown</code><br /><code class='string large'>checkbox</code><br /><code class='string large'>radio</code><br /><code class='string large'>date</code><br /><code class='string large'>daterange</code>&nbsp;<small>(WP 3.7+)</small>",
-			"info"			=> "The order of values in this comma seperated list needs to match the taxonomies list. <br /><br />To display categories, tags and post formats, as a `select` dropdown, radio buttons and checkboxes, we must put them in the order we need:
-			<br /><pre><code class='string'>[searchandfilter taxonomies=\"category,post_tag,post_format\" type=\"select,checkbox,radio\"]</code></pre>
-			If any taxonomies are left unspecified they well default to `select` dropdowns:
-			<br /><pre><code class='string'>[searchandfilter taxonomies=\"category,post_tag,post_format\" type=\"select,checkbox\"]</code></pre>
-			With this example using just \"select,checkbox\", the post format (being the third, not provided parameter) will be displayed as a `select` dropdown.<br /><br />
-
-			If the `type` argument is ommited completely all taxonomies will be displayed as `select` dropdowns, except `post_date` which will default to `date`.<br /><br />
-
-			You might want to use the `wp_dropdown` type to output a `select` dropdown with indented hierarchical structure."
+			"options"		=> "<em>Comma seperated list of any of the types found below:</em><br /><br />select<br />checkbox<br />radio<br /><br />
+								<em>These types should only be used when the field is `post_date`:</em><br /><br />date<br />daterange",
+			"info"			=> "The order of values in this comma seperated list needs to match the fields list."
 		);
 		$counter++;
 
 		$this->taxonomy_data[] = array(
 			"ID"			=> $counter,
-			"name"			=> "label",
-			"defaultval"	=> "<code class='string large'>name</code>",
-			"options"		=> "<code class='string large'>0</code> - hide all labels<br /><br /> or <br /><br /><em>Comma seperated list of any of the types found below:</em><br /><br /><code class='string large'>name</code><br /><code class='string large'>singular_name</code><br /><code class='string large'>search_items</code><br /><code class='string large'>all_items</code><br /><em><code class='string large'>*blank value</code></em>",
-			"info"			=> "This list works the same as the `type` example above.<br /><br />
-			The different values that can be used are taken directly from the labels within a taxonomy object - so make sure you set these in your taxonomies if you wish to use them below.
-			<br /><br />Examples:<br /><br />
-			<strong>Hide all labels:</strong>
-			<pre><code class='string'>[searchandfilter taxonomies=\"category,post_tag,post_format\" label=\"0\"]</code></pre>
-			<strong>Mixture of different label types:</strong>
-			<pre><code class='string'>[searchandfilter taxonomies=\"category,post_tag,post_format\" label=\"singular_name,search_items,all_items\"]</code></pre>
-			<strong>Hiding the label for category and tag, and set `name` for the post format:</strong>
-			<pre><code class='string'>[searchandfilter taxonomies=\"category,post_tag,post_format\" label=\",,name\"]</code></pre>
-			*In this last example, a blank value (ie, comma's with no data in between) tells Search &amp; Filter to hide the label for the particular taxonomy.<br /><br />
-			If the `label` argument is ommited completely all labels will be shown by default and will be set to use the `name` label for a taxonomy.
-			"
+			"name"			=> "headings",
+			"defaultval"	=> "&nbsp;",
+			"options"		=> "<em>Comma seperated list containing any string value.  Blank values are ommited completely and the heading will not display.</em>",
+			"info"			=> "The order of values in this comma seperated list needs to match the fields list."
 		);
 		$counter++;
-
+		
+		$this->taxonomy_data[] = array(
+			"ID"			=> $counter,
+			"name"			=> "hierarchical",
+			"defaultval"	=> "<code class='string large'>0</code>",
+			"options"		=> "<em>Comma seperated list.</em><br /><br />
+									1 - display as hierarchical<br />
+									<em>*Any other value is ignored</em>",
+			"info"			=> "The order of values in this comma seperated list needs to match the fields list."
+		);
+		$counter++;
+		
+		
+		$this->taxonomy_data[] = array(
+			"ID"			=> $counter,
+			"name"			=> "hide_empty",
+			"defaultval"	=> "<code class='string large'>1</code>",
+			"options"		=> "<em>Comma seperated list.</em><br /><br />
+									0 - Shows empty taxonomies<br />
+									1 - Hides empty taxonomies<br />
+									<em>*Any other value is ignored</em>",
+			"info"			=> "The order of values in this comma seperated list needs to match the fields list."
+		);
+		$counter++;
+		
+		$this->taxonomy_data[] = array(
+			"ID"			=> $counter,
+			"name"			=> "order_by",
+			"defaultval"	=> "<code class='string large'>name</code>",
+			"options"		=> "<em>Comma seperated list of the following possible values:</em><br /><br />
+									ID<br />
+									name<br />
+									slug<br />
+									count<br />
+									term_group<br /><br />
+									
+									<em>This uses the values of \"orderby\" as <a href=\"http://codex.wordpress.org/Template_Tags/wp_list_categories\" target=\"_blank\">defined on the WordPress site</a></em>.",
+			"info"			=> "The order of values in this comma seperated list needs to match the fields list."
+		);
+		$counter++;
+				
+		$this->taxonomy_data[] = array(
+			"ID"			=> $counter,
+			"name"			=> "order_dir",
+			"defaultval"	=> "<code class='string large'>ASC</code>",
+			"options"		=> "<em>Comma seperated list containing:</em><br /><br />
+									ASC - ascending<br />
+									DESC - descending<br /><br />
+									<em>This sets the order of taxonomies terms for a given taxonomy and can be used in conjunction with `order_by`.</em>",
+			"info"			=> "The order of values in this comma seperated list needs to match the fields list."
+		);
+		$counter++;
+				
 		$this->taxonomy_data[] = array(
 			"ID"			=> $counter,
 			"name"			=> "post_types",
 			"defaultval"	=> "&nbsp;",
 			"options"		=> "<em>Comma seperated list of any post types (names) in the Public Post Types table below.</em><br /><br /> or set to: <br /><br /><code class='string large'>all</code>",
-			"info"			=> "List all post types you want the widget to search. Leave blank for default behavious without any post type restrictions.  This will use the default setting for post types you have in place which is often just <code>post</code> and <code>page</code><br /><br />
-
-			All searches will be constrained to the post types you add here.<br /><br />
-			If <code>post_type</code> has been added to <code>taxonomies</code> list above, then it will pull its data from this list, a user will be able to choose from all post types listed here."
+			"info"			=> "This can be used with or without `post_type` appearing in the field list.<br /><br />When `post_type` appears in the field list, the post types listed here will be selectable in the `post_type` field.<br /><br />When `post_type` does not appear in the field list, then all searches are retricted to the post types here."
 		);
 		$counter++;
-
-		$this->taxonomy_data[] = array(
-			"ID"			=> $counter,
-			"name"			=> "search",
-			"defaultval"	=> "<code class='string large'>1</code>",
-			"options"		=> "<code class='string large'>0</code> - hide the search box<br /><code class='string large'>1</code> - display search box",
-			"info"			=> "The search box is shown by default, ommit from shortcode unless you specifically want to hide it - then set it with a value of 0."
-		);
-		$counter++;
-
+		
 		$this->taxonomy_data[] = array(
 			"ID"			=> $counter,
 			"name"			=> "class",
@@ -265,10 +287,19 @@ class OF_Variable_List_Table extends WP_List_Table {
 
 		$this->taxonomy_data[] = array(
 			"ID"			=> $counter,
-			"name"			=> "submitlabel",
-			"defaultval"	=> "<code class='string large'>Submit",
+			"name"			=> "submit_label",
+			"defaultval"	=> "<code class='string large'>Submit</code>",
 			"options"		=> "<em>Any string</em>",
 			"info"			=> "This is the text label on the submit button."
+		);
+		$counter++;
+
+		$this->taxonomy_data[] = array(
+			"ID"			=> $counter,
+			"name"			=> "search_placeholder",
+			"defaultval"	=> "<code class='string large'>Search &hellip;</code>",
+			"options"		=> "<em>Any string</em>",
+			"info"			=> "This is the placeholder text that appears when no search term has been entered in the search field."
 		);
 		$counter++;
 

@@ -51,10 +51,10 @@
 			</div>';
 		echo "<h3>Documentation</h3>";
 		echo '<div class="of-caption">
-				Advanced documentation and examples has now moved - <a href="http://docs.designsandcode.com/search-filter/" target="_blank">find it on our official Search &amp; Filter Plugin Documentation page</a>.<br /><br />
-				Please find below documentation to get you started, more examples can be found at the above link.
+				Advanced documentation and examples has now moved - find it on our <a href="http://docs.designsandcode.com/search-filter/" target="_blank">Search &amp; Filter Plugin Documentation</a>.<br /><br />
+				Please find below limited documentation to get you started.
 			</div>';
-		
+
 		echo "<h3>How To Use</h3>";
 		echo '<div class="of-caption">
 				To display Search &amp; Filter all you need to do is a use a shortcode:<br />
@@ -70,7 +70,7 @@
 		
 		
 		echo "<h3>Arguments</h3>";
-		
+		echo '<div class="of-caption">Examples for most of the arguments below can be found over on the <a href="http://docs.designsandcode.com/search-filter/#examples" target="_blank">Search &amp; Filter Plugin Documentation</a>.</div>';
 		//display table
 		$ofVarListTable = new OF_Variable_List_Table();
 		$ofVarListTable->prepare_items();

@@ -15,6 +15,26 @@ You can search by Category, Tag, Custom Taxonomy or any combination of these eas
 
 ## Changelog
 
+
+### 1.2.0
+ -  WARNING - this update includes some major changes to shortcode construction,  do not upgrade until you have read how this will affect your setup - updating should be easy.
+ - Renamed the `taxonomies` argument to `fields` - `taxonomies` is now no longer appropriate as this list contains field types other than taxonomies - this list now contains taxonomies, `post_type`, `post_date` and `search` - `taxonomies` as an argument is still supported however will be deprecated
+ - Search box can now be positioned anywhere, simply include `search` in the fields list in the position desired.  Upgrading from previous versions will cause you to lose your search box, simply include `search` in the fields list to show it again
+ - Drop support for `search` argument as no longer relevant - control display of search input by adding it to the `fields` list
+ - Labels have been completely rewritten - `label` has been renamed to `headings` to avoid confusion with internal taxonomy labels - the `headings` argument now allows for any text to be added and displayed as a heading for each field - this allows for much more flexibility and no longer uses internal taxonomy labels - to hide a label simply leave blank
+ - Added support for hierarchical taxonomies for all input types - checkbox, radio & select
+ - Added support for ordering of taxonomies - use `order_by` argument - allowed values are `id`, `name`, `slug`, `count`, `term_group`
+ - Added support for ordering direction of taxonomies - use `order_dir` argument - allowed values are 'asc' or 'desc'
+ - Added support to show or hide empty taxonomies - use `hide_empty` argument
+ - Added support for `search_placeholder` 
+ - Updated `post_date` functionality to work with older versions of WP - can be displayed either as `date` or `daterange` - the `post_date` field uses the HTML 5 input type of `date` - browsers that do not support it will simply show a text box - a tutorial of integrating jquery for graceful degredation is in the works
+ - Renamed `submitlabel` to `submit_label` - `submitlabel` still works for now.
+ - Renamed `type` to `types` - `type` still works for now.
+ - Updated display of checkboxes and radio buttons, inputs are now wrapped in an unordered list which may affect your styling
+ - Various bug fixes
+ - Thanks to `bradaric` for help with hierarchical dropdown lists and date input types - https://github.com/bradaric
+
+
 ### 1.1.3
  - Added support for `post_date` to be displayed either as `date` or `daterange` (WP 3.7+) type.
 

@@ -1,10 +1,10 @@
 === Search & Filter ===
 Contributors: DesignsAndCode
 Donate link:
-Tags: category, filter, taxonomy, search, wordpress, post type
+Tags: category, filter, taxonomy, search, wordpress, post type, post date
 Requires at least: 3.5
-Tested up to: 3.6
-Stable tag: 1.1.2
+Tested up to: 3.8
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,21 +21,9 @@ For basic usage, you can also have a look at the [plugin homepage](http://www.de
 
 == Frequently Asked Questions ==
 
-= Some text/headings/labels for my different Taxonomies seem to be broken or don't appear correctly =
+= How can I xxxxx ? =
 
-Search & Filter uses the Taxonomy object and its label properly, this means when registering custom taxonomies make sure you fill out valid values for the following labels:
-
-* name
-* singular_name
-* search_items
-* all_items
-
-If you have used a plugin to register a custom taxonomy this info can normally be found under advanced settings.
-
-= When using the checkboxes for Post Types =
-
-Search & Filter uses the Taxonomy object and its label properly, this means when registering custom taxonomies make sure you fill out valid values for the following labels:
-
+The documentation has been updated to include examples almost all configurable options with screenshots - please refer to the [Search & Filter Docs](http://docs.designsandcode.com/search-filter/).
 
 == Screenshots ==
 
@@ -46,8 +34,26 @@ Search & Filter uses the Taxonomy object and its label properly, this means when
 
 == Changelog ==
 
+= 1.2.0 =
+* WARNING - this update includes some major changes to shortcode construction,  do not upgrade until you have read how this will affect your setup - updating should be easy.
+* Renamed the `taxonomies` argument to `fields` - `taxonomies` is now no longer appropriate as this list contains field types other than taxonomies - this list now contains taxonomies, `post_type`, `post_date` and `search` - `taxonomies` as an argument is still supported however will be deprecated
+* Search box can now be positioned anywhere, simply include `search` in the fields list in the position desired.  Upgrading from previous versions will cause you to lose your search box, simply include `search` in the fields list to show it again
+* Drop support for `search` argument as no longer relevant - control display of search input by adding it to the `fields` list
+* Labels have been completely rewritten - `label` has been renamed to `headings` to avoid confusion with internal taxonomy labels - the `headings` argument now allows for any text to be added and displayed as a heading for each field - this allows for much more flexibility and no longer uses internal taxonomy labels - to hide a label simply leave blank
+* Added support for hierarchical taxonomies for all input types - checkbox, radio & select
+* Added support for ordering of taxonomies - use `order_by` argument - allowed values are `id`, `name`, `slug`, `count`, `term_group`
+* Added support for ordering direction of taxonomies - use `order_dir` argument - allowed values are 'asc' or 'desc'
+* Added support to show or hide empty taxonomies - use `hide_empty` argument
+* Added support for `search_placeholder` 
+* Updated `post_date` functionality to work with older versions of WP - can be displayed either as `date` or `daterange` - the `post_date` field uses the HTML 5 input type of `date` - browsers that do not support it will simply show a text box - a tutorial of integrating jquery for graceful degredation is in the works
+* Renamed `submitlabel` to `submit_label` - `submitlabel` still works for now.
+* Renamed `type` to `types` - `type` still works for now.
+* Updated display of checkboxes and radio buttons, inputs are now wrapped in an unordered list which may affect your styling
+* Various bug fixes
+* Thanks to `bradaric` for help with hierarchical dropdown lists and date input types - https://github.com/bradaric
+
 = 1.1.3 =
-* Added support for `post_date` to be displayed either as `date` or `daterange` (WP 3.7+) type.
+* Added support for post_date to be displayed either as `date` or `daterange` (WP 3.7+) type
 
 = 1.1.2 =
 * Added support for all public and custom post types (the `attachment` post type is excluded) - all post types can be user searchable or predfined and hidden from the user.  This allows for users to add multiple search widgets to their site which work on specific post types independantly from eachother.
@@ -78,7 +84,7 @@ Search & Filter uses the Taxonomy object and its label properly, this means when
 
 == Upgrade Notice ==
 
-Upgrade should be fully compatible with previous versions.  A previous update however automatically added headings to dropdowns, refer to usage and examples on how to disable them if this is not the required behaviour.
+* WARNING - this update includes some major changes to shortcode construction,  do not upgrade until you have read the changelog and how this will affect your setup - updating should be easy.
 
 == Description ==
 

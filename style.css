@@ -10,23 +10,13 @@ body
 }
 .searchandfilter ul
 {
-	margin-left: 0;
 	display:inline-block;
 }
 .searchandfilter li
 {
 	list-style: none;
 	display:inline-block;
-	padding-right:0.15em;
-}
-.searchandfilter input
-{
-	font-size: 0.75em;
-}
-.searchandfilter select
-{
-	font-size: 0.75em;
-	height: 2.25em;
+	padding-right:10px;
 }
 
 /* If in a widget area make a single column by adding display block  */
@@ -42,4 +32,9 @@ body
 {
 	margin:15px 0;
 	font-size:16px;
+}
+
+.searchandfilter ul > li > ul:not(.children)
+{
+	margin-left:0;
 }
