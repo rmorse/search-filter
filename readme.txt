@@ -4,11 +4,11 @@ Donate link:
 Tags: category, filter, taxonomy, search, wordpress, post type, post date
 Requires at least: 3.5
 Tested up to: 3.8
-Stable tag: 1.2.0
+Stable tag: 1.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Search and Filtering for Custom Posts, Categories, Tags and Taxonomies
+Search and Filtering for Custom Posts, Categories, Tags, Taxonomies, Post Dates and Post Types
 
 == Installation ==
 
@@ -33,6 +33,25 @@ The documentation has been updated to include examples almost all configurable o
 4. Example of Search & Filter using a post type filter
 
 == Changelog ==
+
+= 1.2.4 =
+* Fixed a bug created in 1.2.3 when doing an empty search
+
+= 1.2.3 =
+* Added arguement `all_items_labels` which allows for support for custom `all_items` labels in taxonomies, categories, post tags and post types when using `select` and `radio` types - the default text displaying "All Categories" for example can now be defined using `all_items_labels`
+* Added `show_count` to arguments - this shows how many posts are in a particular term, in brackets after the term name - works only for categories, tags and taxonomies
+* Fixed a bug when using when using "all post types" and it displaying no results
+* Reverted behaviour from 1.2.2 - no longer force load search template when search is blank - let WP handle it again
+* Added argument `add_search_param` - setting it to `1` will force a "?s=" or "&s=" to be added to the url even when the search is blank - in some circumstances this will force load the search template, instead of other WP templates, such as taxonomy or category templates
+
+= 1.2.2 =
+* Added support for multi selects - use `multiselect` as the type for your field
+* Added support for AND & OR operators when using checkboxes or multiselects - use the `operators` argument with allowed values of `and` & `or`
+* Force load search template when search is blank, don't include when search field is not included in shortcode
+* Fixed an issue with navigation disappearing when using post_types
+
+= 1.2.1 =
+* Version Bump - bad commit
 
 = 1.2.0 =
 * WARNING - this update includes some major changes to shortcode construction,  do not upgrade until you have read how this will affect your setup - updating should be easy.
@@ -88,9 +107,9 @@ The documentation has been updated to include examples almost all configurable o
 
 == Description ==
 
-Search & Filter is a simple search and filtering plugin for WordPress.  It is essentially an advancement of the WordPress search box, adding taxonomy and post type filters to really refine your searches.
+Search & Filter is a simple search and filtering plugin for WordPress.  It is essentially an advancement of the WordPress search box, adding taxonomy, post type and post date filters to really refine your searches.
 
-You can search by Category, Tag, Custom Taxonomy, Post Type or any combination of these easily - you can even remove the search box and simply use it as a filtering system for your posts and pages.  Taxonomies and Post Types can be displayed as dropdown selects, checkboxes or radio buttons.
+You can search by Category, Tag, Custom Taxonomy, Post Type, Post Date or any combination of these easily - you can even remove the search box and simply use it as a filtering system for your posts and pages.  Taxonomies and Post Types can be displayed as dropdown selects, checkboxes, radio buttons or multi selects.
 
 = Links =
 

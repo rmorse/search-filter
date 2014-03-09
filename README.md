@@ -15,6 +15,24 @@ You can search by Category, Tag, Custom Taxonomy or any combination of these eas
 
 ## Changelog
 
+### 1.2.4
+ - Fixed a bug created in 1.2.3 when doing an empty search
+
+### 1.2.3
+ - Added arguement `all_items_labels` which allows for support for custom `all_items` labels in taxonomies, categories, post tags and post types when using `select` and `radio` types - the default text displaying "All Categories" for example can now be defined using `all_items_labels`
+ - Added `show_count` to arguments - this shows how many posts are in a particular term, in brackets after the term name - works only for categories, tags and taxonomies
+ - Fixed a bug when using when using "all post types" and it displaying no results
+ - Reverted behaviour from 1.2.2 - no longer force load search template when search is blank - let WP handle it again
+ - Added argument `add_search_param` - setting it to `1` will force a "?s=" or "&s=" to be added to the url even when the search is blank - in some circumstances this will force load the search template, instead of other WP templates, such as taxonomy or category templates
+
+### 1.2.2
+ - Added support for multi selects - use `multiselect` as the type for your field
+ - Added support for AND & OR operators when using checkboxes or multiselects - use the `operators` argument with allowed values of `and` & `or`
+ - Force load search template when search is blank, don't include when search field is not included in shortcode
+ - Fixed an issue with navigation disappearing when using post_types
+
+### 1.2.1
+ - Version Bump - bad commit
 
 ### 1.2.0
  -  WARNING - this update includes some major changes to shortcode construction,  do not upgrade until you have read how this will affect your setup - updating should be easy.
@@ -33,7 +51,6 @@ You can search by Category, Tag, Custom Taxonomy or any combination of these eas
  - Updated display of checkboxes and radio buttons, inputs are now wrapped in an unordered list which may affect your styling
  - Various bug fixes
  - Thanks to `bradaric` for help with hierarchical dropdown lists and date input types - https://github.com/bradaric
-
 
 ### 1.1.3
  - Added support for `post_date` to be displayed either as `date` or `daterange` (WP 3.7+) type.
