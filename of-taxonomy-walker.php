@@ -158,7 +158,7 @@ class Taxonomy_Walker extends Walker_Category {
 				$output .= "\t$link<br />\n";
 			}
 		}
-		else if($this->type=="multiselect")
+		else if(($this->type=="multiselect")||($this->type=="select"))
 		{
 			extract($args);
 
@@ -184,26 +184,28 @@ class Taxonomy_Walker extends Walker_Category {
 				}
 			}
 			
-			
-			/* Custom  depth calculations! :/ */
-			if($category->parent == 0)
-			{//then this has no parent so reset depth
-				$this->multidepth = 0;
-			}
-			else if($category->parent == $this->multilastid)
+			if($hierarchical)
 			{
-				$this->multidepth++;
-				$this->multilastdepthchange = $this->multilastid;
-			}
-			else if($category->parent == $this->multilastdepthchange)
-			{//then this is also a child with the same parent so don't change depth
-				
-			}
-			else
-			{//then this has a different parent so must be lower depth
-				if($this->multidepth>0)
+				/* Custom  depth calculations! :/ */
+				if($category->parent == 0)
+				{//then this has no parent so reset depth
+					$this->multidepth = 0;
+				}
+				else if($category->parent == $this->multilastid)
 				{
-					$this->multidepth--;
+					$this->multidepth++;
+					$this->multilastdepthchange = $this->multilastid;
+				}
+				else if($category->parent == $this->multilastdepthchange)
+				{//then this is also a child with the same parent so don't change depth
+					
+				}
+				else
+				{//then this has a different parent so must be lower depth
+					if($this->multidepth>0)
+					{
+						$this->multidepth--;
+					}
 				}
 			}
 			
@@ -254,7 +256,7 @@ class Taxonomy_Walker extends Walker_Category {
 
 			$output .= "</li>\n";
 		}
-		else if($this->type=="multiselect")
+		else if(($this->type=="multiselect")||($this->type=="select"))
 		{
 			if ( 'list' != $args['style'] )
 				return;
@@ -282,7 +284,7 @@ class Taxonomy_Walker extends Walker_Category {
 			$indent = str_repeat("\t", $depth);
 			$output .= "$indent<ul class='children'>\n";
 		}
-		else if($this->type=="multiselect")
+		else if(($this->type=="multiselect")||($this->type=="select"))
 		{
 			/*if ( 'list' != $args['style'] )
 				return;
@@ -309,7 +311,7 @@ class Taxonomy_Walker extends Walker_Category {
 			$indent = str_repeat("\t", $depth);
 			$output .= "$indent</ul>\n";
 		}
-		else if($this->type=="multiselect")
+		else if(($this->type=="multiselect")||($this->type=="select"))
 		{
 			
 		}

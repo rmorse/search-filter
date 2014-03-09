@@ -1345,6 +1345,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 				if($types[$i]=="select")
 				{
+					$args['defaults'] = $this->defaults[$args['name']];
 					$returnvar .= $this->generate_wp_dropdown($args, $taxonomy, $this->tagid, $taxonomydata->labels);
 				}
 				else if($types[$i]=="checkbox")
@@ -1424,6 +1425,15 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			return $returnvar;
 		}
 		
+		//use wp array walker to enable hierarchical display
+		public function generate_wp_select($args, $name, $currentid = 0, $labels = null, $defaultval = "0")
+		{
+			$returnvar = '<select name="'.$args['name'].'[]" class="postform">';
+			$returnvar .= walk_taxonomy('select', $args);
+			$returnvar .= "</select>";
+			
+			return $returnvar;
+		}
 		//use wp array walker to enable hierarchical display
 		public function generate_wp_multiselect($args, $name, $currentid = 0, $labels = null, $defaultval = "0")
 		{
