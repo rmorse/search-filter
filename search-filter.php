@@ -1350,7 +1350,11 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				else if($types[$i]=="checkbox")
 				{
 					$args['title_li'] = '';
-					$args['defaults'] = $this->defaults[$args['name']];
+					$args['defaults'] = "";
+					if(isset($this->defaults[$args['name']]))
+					{
+						$args['defaults'] = $this->defaults[$args['name']];
+					}
 					//$args['show_option_all'] = 0;
 					
 					$returnvar .= $this->generate_wp_checkbox($args, $taxonomy, $this->tagid, $taxonomydata->labels);
@@ -1358,14 +1362,22 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				else if($types[$i]=="radio")
 				{
 					$args['title_li'] = '';
-					$args['defaults'] = $this->defaults[$args['name']];
+					$args['defaults'] = "";
+					if(isset($this->defaults[$args['name']]))
+					{
+						$args['defaults'] = $this->defaults[$args['name']];
+					}
 					
 					$returnvar .= $this->generate_wp_radio($args, $taxonomy, $this->tagid, $taxonomydata->labels);
 				}
 				else if($types[$i]=="multiselect")
 				{
 					$args['title_li'] = '';
-					$args['defaults'] = $this->defaults[$args['name']];
+					$args['defaults'] = "";
+					if(isset($this->defaults[$args['name']]))
+					{
+						$args['defaults'] = $this->defaults[$args['name']];
+					}
 					
 					$returnvar .= $this->generate_wp_multiselect($args, $taxonomy, $this->tagid, $taxonomydata->labels);
 				}
