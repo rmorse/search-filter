@@ -5,7 +5,7 @@ Plugin URI: http://www.designsandcode.com/447/wordpress-search-filter-plugin-for
 Description: Search and Filtering system for Pages, Posts, Categories, Tags and Taxonomies
 Author: Designs & Code
 Author URI: http://www.designsandcode.com/
-Version: 1.2.4
+Version: 1.2.5
 Text Domain: searchandfilter
 License: GPLv2
 */
@@ -16,7 +16,7 @@ License: GPLv2
 * Set up Plugin Globals
 */
 if (!defined('SEARCHANDFILTER_VERSION_NUM'))
-    define('SEARCHANDFILTER_VERSION_NUM', '1.2.4');
+    define('SEARCHANDFILTER_VERSION_NUM', '1.2.5');
 
 if (!defined('SEARCHANDFILTER_THEME_DIR'))
     define('SEARCHANDFILTER_THEME_DIR', ABSPATH . 'wp-content/themes/' . get_template());
@@ -61,7 +61,6 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 		private $defaults = array();
 		private $frmreserved = array();
 		private $taxonomylist = array();
-		private $add_search_param = 1;
 
 		public function __construct()
 		{
@@ -128,7 +127,8 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				'show_count' => "",
 				'order_dir' => "",
 				'operators' => "",
-				'add_search_param' => ""
+				'add_search_param' => "0",
+				'empty_search_url' => ""
 				
 			), $atts));
 
@@ -145,10 +145,8 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			$this->taxonomylist = $fields;
 			$nofields = count($fields);
 			
-			if($add_search_param==0)
-			{
-				$this->add_search_param = $add_search_param;
-			}
+			$add_search_param = (int)$add_search_param;
+			
 			
 			//init `submitlabel`
 			if($submitlabel!=null)
@@ -279,6 +277,8 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				$types = array();
 			}
 			
+			//init empty_search_url
+			
 			
 			//Loop through Fields and set up default vars
 			for($i=0; $i<$nofields; $i++)
@@ -374,7 +374,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			//set all form defaults / dropdowns etc
 			$this->set_defaults();
 
-			return $this->get_search_filter_form($submit_label, $search_placeholder, $fields, $types, $labels, $hierarchical, $hide_empty, $show_count, $post_types, $order_by, $order_dir, $operators, $all_items_labels, $class);
+			return $this->get_search_filter_form($submit_label, $search_placeholder, $fields, $types, $labels, $hierarchical, $hide_empty, $show_count, $post_types, $order_by, $order_dir, $operators, $all_items_labels, $empty_search_url, $add_search_param, $class);
 		}
 
 
@@ -734,8 +734,11 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			}
 			if(!$this->hassearchquery)
 			{
+				
 				if((isset($_POST[SF_FPRE.'add_search_param']))&&($this->has_form_posted))
 				{//this is only set when a search box is displayed - it tells S&F to append a blank search to the URL to indicate a search has been submitted with no terms, however, still load the search template
+					
+					
 					
 					if(!$this->hasqmark)
 					{
@@ -932,19 +935,22 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					{
 						$post_date = $post_date_arr[0];
 					}
-										
-					if($post_date!="")
+					
+					if(isset($post_date))
 					{
-						if(!$this->hasqmark)
+						if($post_date!="")
 						{
-							$this->urlparams .= "?";
-							$this->hasqmark = true;
+							if(!$this->hasqmark)
+							{
+								$this->urlparams .= "?";
+								$this->hasqmark = true;
+							}
+							else
+							{
+								$this->urlparams .= "&";
+							}
+							$this->urlparams .= "post_date=".$post_date;
 						}
-						else
-						{
-							$this->urlparams .= "&";
-						}
-						$this->urlparams .= "post_date=".$post_date;
 					}
 				}
 			}
@@ -1036,15 +1042,25 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			
 				if($this->urlparams=="/")
 				{//check to see if url params are set, if not ("/") then add "?s=" to force load search results, without this it would redirect to the homepage, which may be a custom page with no blog items/results
-					//echo "HERE";exit;
 					$this->urlparams .= "?s=";
 				}
 				
-				wp_redirect( (home_url().$this->urlparams) );
+				if($this->urlparams=="/?s=")
+				{//if a blank search was submitted - need to check for this string here in case `add_search_param` has already added a "?s=" to the url
+				
+					if(isset($_POST[SF_FPRE.'empty_search_url']))
+					{//then redirect to the provided empty search url
+						
+						wp_redirect(esc_url($_POST[SF_FPRE.'empty_search_url']));
+						exit;
+					}				
+				}
+				
+				wp_redirect((home_url().$this->urlparams));
 			}
 		}
 	
-		public function get_search_filter_form($submitlabel, $search_placeholder, $fields, $types, $labels, $hierarchical, $hide_empty, $show_count, $post_types, $order_by, $order_dir, $operators, $all_items_labels, $class)
+		public function get_search_filter_form($submitlabel, $search_placeholder, $fields, $types, $labels, $hierarchical, $hide_empty, $show_count, $post_types, $order_by, $order_dir, $operators, $all_items_labels, $empty_search_url, $add_search_param, $class)
 		{
 			$returnvar = '';
 
@@ -1121,10 +1137,16 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 						$returnvar .='<li>';
 						
-						if($this->add_search_param==1)
+						if($add_search_param==1)
 						{
 							$returnvar .= "<input type=\"hidden\" name=\"".SF_FPRE."add_search_param\" value=\"1\" />";
 						}
+						
+						if($empty_search_url!="")
+						{
+							$returnvar .= "<input type=\"hidden\" name=\"".SF_FPRE."empty_search_url\" value=\"".esc_url($empty_search_url)."\" />";
+						}
+						
 						
 						$returnvar .=
 							'<input type="hidden" name="'.SF_FPRE.'submitted" value="1">
