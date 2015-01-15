@@ -547,7 +547,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 			//grab search term for prefilling search input
 			if(isset($wp_query->query['s']))
-			{//!"£$%^&*()
+			{//!"Â£$%^&*()
 				$this->searchterm = trim(get_search_query());
 			}
 
@@ -876,7 +876,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					{
 						$this->urlparams .= "&";
 					}
-					$this->urlparams .= "post_types=".$post_types;
+					$this->urlparams .= "post_type=".$post_types;
 
 				}
 			}
