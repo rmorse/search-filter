@@ -547,7 +547,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 			//grab search term for prefilling search input
 			if(isset($wp_query->query['s']))
-			{//!"£$%^&*()
+			{//!"Â£$%^&*()
 				$this->searchterm = trim(get_search_query());
 			}
 
@@ -572,7 +572,6 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			
 			$this->defaults[SF_FPRE.'post_tag'] = $tags;
 
-			$taxs = array();
 			//loop through all the query vars
 			foreach($wp_query->query as $key=>$val)
 			{
@@ -582,6 +581,8 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					//now check it is a desired key
 					if(in_array($key, $this->taxonomylist))
 					{
+						$taxs = array();
+						
 						$taxslug = ($val);
 						//$tax_params = explode("+",esc_attr($taxslug));
 						
