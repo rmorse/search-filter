@@ -28,7 +28,7 @@ if (!defined('SEARCHANDFILTER_PLUGIN_DIR'))
     define('SEARCHANDFILTER_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . SEARCHANDFILTER_PLUGIN_NAME);
 
 if (!defined('SEARCHANDFILTER_PLUGIN_URL'))
-    define('SEARCHANDFILTER_PLUGIN_URL', WP_PLUGIN_URL . '/' . SEARCHANDFILTER_PLUGIN_NAME);
+    define('SEARCHANDFILTER_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 if (!defined('SEARCHANDFILTER_BASENAME'))
     define('SEARCHANDFILTER_BASENAME', plugin_basename(__FILE__));
@@ -93,15 +93,15 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 		
 		public function of_enqueue_styles()
 		{
-			wp_enqueue_style( 'searchandfilter', SEARCHANDFILTER_PLUGIN_URL . '/style.css', false, 1.0, 'all' );
+			wp_enqueue_style( 'searchandfilter', SEARCHANDFILTER_PLUGIN_URL . 'style.css', false, 1.0, 'all' );
 		}
 		public function of_enqueue_admin_ss($hook)
 		{
 			if( 'toplevel_page_searchandfilter-settings' == $hook )
 			{
-				wp_enqueue_style( 'of_syntax_style', SEARCHANDFILTER_PLUGIN_URL.'/admin/github.css', false, 1.0, 'all' ); //more highlight styles http://softwaremaniacs.org/media/soft/highlight/test.html
-				wp_enqueue_style( 'of_style', SEARCHANDFILTER_PLUGIN_URL.'/admin/style.css', false, 1.0, 'all' );
-				wp_enqueue_script( 'of_syntax_script', SEARCHANDFILTER_PLUGIN_URL.'/admin/syntax.highlight.min.js' );
+				wp_enqueue_style( 'of_syntax_style', SEARCHANDFILTER_PLUGIN_URL.'admin/github.css', false, 1.0, 'all' ); //more highlight styles http://softwaremaniacs.org/media/soft/highlight/test.html
+				wp_enqueue_style( 'of_style', SEARCHANDFILTER_PLUGIN_URL.'admin/style.css', false, 1.0, 'all' );
+				wp_enqueue_script( 'of_syntax_script', SEARCHANDFILTER_PLUGIN_URL.'admin/syntax.highlight.min.js' );
 			}
 		}
 		
