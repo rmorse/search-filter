@@ -1040,9 +1040,16 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			if($this->has_form_posted)
 			{//if the search has been posted, redirect to the newly formed url with all the right params
 			
-				if($this->urlparams=="/")
+				if (!strpos($this->urlparams, "?s=")) 
 				{//check to see if url params are set, if not ("/") then add "?s=" to force load search results, without this it would redirect to the homepage, which may be a custom page with no blog items/results
-					$this->urlparams .= "?s=";
+					if (strpos($this->urlparams, "?")) 
+					{
+						$this->urlparams = str_replace("?", "?s=&", $this->urlparams);
+					} 
+					else 
+					{
+						$this->urlparams .= "?s=";
+					}
 				}
 				
 				if($this->urlparams=="/?s=")
