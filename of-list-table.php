@@ -48,9 +48,9 @@ class OF_Taxonomy_List_Table extends WP_List_Table {
 
 	function get_columns(){
 		$columns = array(
-			'name'			=> 'Name',
-			'label'			=> 'Label',
-			'posttypes'		=> 'Post Types'
+			'name'			=> __( 'Name', 'searchandfilter' ),
+			'label'			=> __( 'Label', 'searchandfilter' ),
+			'posttypes'		=> __( 'Post Types', 'searchandfilter' )
 		);
 		return $columns;
 	}
@@ -128,8 +128,8 @@ class OF_Post_Type_Table extends WP_List_Table {
 
 	function get_columns(){
 		$columns = array(
-			'name'			=> 'Name',
-			'label'			=> 'Label'
+			'name'			=> __( 'Name', 'searchandfilter' ),
+			'label'			=> __( 'Label', 'searchandfilter' )
 		);
 		return $columns;
 	}
@@ -307,10 +307,10 @@ class OF_Variable_List_Table extends WP_List_Table {
 
 	function get_columns(){
 		$columns = array(
-			'name'			=> 'Name',
-			'defaultval'		=> 'Default Value',
-			'options'		=> 'Options',
-			'info'		=> 'Additonal Information'
+			'name'			=> __( 'Name', 'searchandfilter' ),
+			'defaultval'	=> __( 'Default Value', 'searchandfilter' ),
+			'options'		=> __( 'Options', 'searchandfilter' ),
+			'info'			=> __( 'Additonal Information', 'searchandfilter' )
 		);
 		return $columns;
 	}
@@ -336,9 +336,4 @@ class OF_Variable_List_Table extends WP_List_Table {
 		}
 	}
 
-
-
 }
-
-
-?>

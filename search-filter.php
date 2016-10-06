@@ -10,8 +10,6 @@ Text Domain: searchandfilter
 License: GPLv2
 */
 
-// TO DO - i18n http://codex.wordpress.org/I18n_for_WordPress_Developers
-
 /*
 * Set up Plugin Globals
 */
@@ -167,7 +165,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				if($submit_label==null)
 				{//default value
-					$submit_label = "Submit"; 
+					$submit_label = __( 'Submit', 'searchandfilter' );
 				}
 			}
 			
@@ -1253,9 +1251,9 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			$returnvar .= "<li>";
 
 			$post_type_labels = array();
-			$post_type_labels['name'] = "Post Types";
-			$post_type_labels['singular_name'] = "Post Type";
-			$post_type_labels['search_items'] = "Search Post Types";
+			$post_type_labels['name'] = __( 'Post Types', 'searchandfilter' );
+			$post_type_labels['singular_name'] = __( 'Post Type', 'searchandfilter' );
+			$post_type_labels['search_items'] = __( 'Search Post Types', 'searchandfilter' );
 			
 			if($all_items_labels[$i]!="")
 			{
@@ -1263,7 +1261,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			}
 			else
 			{
-				$post_type_labels['all_items'] = "All Post Types";
+				$post_type_labels['all_items'] = __( 'All Post Types', 'searchandfilter' );
 			}
 
 			$post_type_labels = (object)$post_type_labels;
@@ -1719,6 +1717,3 @@ require_once(SEARCHANDFILTER_PLUGIN_DIR."/of-taxonomy-walker.php");
 
 // admin screens & plugin mods
 require_once(SEARCHANDFILTER_PLUGIN_DIR."/of-admin.php");
-
-
-?>
