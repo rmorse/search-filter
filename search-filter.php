@@ -547,7 +547,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 			//grab search term for prefilling search input
 			if(isset($wp_query->query['s']))
-			{//!"£$%^&*()
+			{//!"Â£$%^&*()
 				$this->searchterm = trim(get_search_query());
 			}
 
@@ -691,8 +691,14 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 					if(get_option('permalink_structure'))
 					{
-						//$catrel = trim(str_replace(home_url(), "", get_category_link()), "/").$categories."/"; //get full category link, remvoe the home url to get relative, trim traling slashed, the append slash at the end
-						$category_base = (get_option( 'category_base' )=="") ? "category" : get_option( 'category_base' );
+						
+                                                    $custom = str_replace("/%postname%/","",get_option('permalink_structure'));
+                                                    $custom = ltrim($custom,'/');
+                                                
+                                                    
+                                                //$catrel = trim(str_replace(home_url(), "", get_category_link()), "/").$categories."/"; //get full category link, remvoe the home url to get relative, trim traling slashed, the append slash at the end
+						$category_base = (get_option( 'category_base' )=="") ? $custom."/category" : get_option( 'category_base' );
+						
 						$category_path = $category_base."/".$categories."/";
 						$this->urlparams .= $category_path;
 					}
