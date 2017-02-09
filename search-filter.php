@@ -83,7 +83,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			add_filter('widget_text', 'do_shortcode');
 			
 			// Check the header to see if the form has been submitted
-			add_action( 'get_header', array( $this, 'check_posts' ) );
+			add_action( 'wp', array( $this, 'check_posts' ) );
 			
 			// Add styles
 			add_action( 'wp_enqueue_scripts', array($this, 'of_enqueue_styles') );
@@ -547,7 +547,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 			//grab search term for prefilling search input
 			if(isset($wp_query->query['s']))
-			{//!"£$%^&*()
+			{//!"Â£$%^&*()
 				$this->searchterm = trim(get_search_query());
 			}
 
