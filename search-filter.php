@@ -5,7 +5,7 @@ Plugin URI: http://www.designsandcode.com/447/wordpress-search-filter-plugin-for
 Description: Search and Filtering system for Pages, Posts, Categories, Tags and Taxonomies
 Author: Designs & Code
 Author URI: http://www.designsandcode.com/
-Version: 1.2.5
+Version: 1.2.9
 Text Domain: searchandfilter
 License: GPLv2
 */
@@ -16,7 +16,7 @@ License: GPLv2
 * Set up Plugin Globals
 */
 if (!defined('SEARCHANDFILTER_VERSION_NUM'))
-    define('SEARCHANDFILTER_VERSION_NUM', '1.2.5');
+    define('SEARCHANDFILTER_VERSION_NUM', '1.2.9');
 
 if (!defined('SEARCHANDFILTER_THEME_DIR'))
     define('SEARCHANDFILTER_THEME_DIR', ABSPATH . 'wp-content/themes/' . get_template());
@@ -64,33 +64,33 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 		public function __construct()
 		{
-			
+
 			// Set up reserved fields
 			$this->frmreserved = array(SF_FPRE."category", SF_FPRE."search", SF_FPRE."post_tag", SF_FPRE."submitted", SF_FPRE."post_date", SF_FPRE."post_types");
 			$this->frmqreserved = array(SF_FPRE."category_name", SF_FPRE."s", SF_FPRE."tag", SF_FPRE."submitted", SF_FPRE."post_date", SF_FPRE."post_types"); //same as reserved
-			
+
 			//add query vars
 			add_filter('query_vars', array($this,'add_queryvars') );
-			
+
 			//filter post type & date if it is set
 			add_filter('pre_get_posts', array($this,'filter_query_post_types'));
 			add_filter('pre_get_posts', array($this,'filter_query_post_date'));
-			
+
 			//add_filter('pre_get_posts',array($this, 'fix_blank_search')); //temporaril disabled
-			
+
 			// Add shortcode support for widgets
 			add_shortcode('searchandfilter', array($this, 'shortcode'));
 			add_filter('widget_text', 'do_shortcode');
-			
+
 			// Check the header to see if the form has been submitted
-			add_action( 'get_header', array( $this, 'check_posts' ) );
-			
+			add_action( 'wp', array( $this, 'check_posts' ) );
+
 			// Add styles
 			add_action( 'wp_enqueue_scripts', array($this, 'of_enqueue_styles') );
 			add_action( 'admin_enqueue_scripts', array($this, 'of_enqueue_admin_ss') );
-			
+
 		}
-		
+
 		public function of_enqueue_styles()
 		{
 			wp_enqueue_style( 'searchandfilter', SEARCHANDFILTER_PLUGIN_URL . '/style.css', false, 1.0, 'all' );
@@ -104,12 +104,12 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				wp_enqueue_script( 'of_syntax_script', SEARCHANDFILTER_PLUGIN_URL.'/admin/syntax.highlight.min.js' );
 			}
 		}
-		
+
 		public function shortcode($atts, $content = null)
 		{
 			// extract the attributes into variables
 			extract(shortcode_atts(array(
-			
+
 				'fields' => null,
 				'taxonomies' => null, //will be deprecated - use `fields` instead
 				'submit_label' => null,
@@ -129,7 +129,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				'operators' => "",
 				'add_search_param' => "0",
 				'empty_search_url' => ""
-				
+
 			), $atts));
 
 			//init `fields`
@@ -140,21 +140,21 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			else
 			{
 				$fields = explode(",",$taxonomies);
-			}	
-			
+			}
+
 			$this->taxonomylist = $fields;
 			$nofields = count($fields);
-			
+
 			$add_search_param = (int)$add_search_param;
-			
-			
+
+
 			//init `submitlabel`
 			if($submitlabel!=null)
 			{//then the old "submitlabel" has been supplied
-				
+
 				if($submit_label==null)
 				{
-					//then the new label has not been supplied so do nothing 
+					//then the new label has not been supplied so do nothing
 					$submit_label = $submitlabel;
 				}
 				else
@@ -167,10 +167,10 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				if($submit_label==null)
 				{//default value
-					$submit_label = "Submit"; 
+					$submit_label = "Submit";
 				}
 			}
-			
+
 			//init `post_types`
 			if($post_types!="")
 			{
@@ -182,9 +182,9 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					$post_types = array("all");
 				}
-				
+
 			}
-			
+
 			//init `hierarchical`
 			if($hierarchical!="")
 			{
@@ -194,7 +194,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$hierarchical = array("");
 			}
-			
+
 			//init `hide_empty`
 			if($hide_empty!="")
 			{
@@ -204,7 +204,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$hide_empty = array("");
 			}
-			
+
 			//init `show_count`
 			if($show_count!="")
 			{
@@ -214,7 +214,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$show_count = array();
 			}
-			
+
 			//init `order_by`
 			if($order_by!="")
 			{
@@ -224,7 +224,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$order_by = array("");
 			}
-			
+
 			//init `order_dir`
 			if($order_dir!="")
 			{
@@ -234,7 +234,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$order_dir = array("");
 			}
-			
+
 			//init `operators`
 			if($operators!="")
 			{
@@ -244,24 +244,24 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$operators = array("");
 			}
-			
-			
+
+
 			//init `labels`
 			$labels = explode(",",$headings);
-			
+
 			if(!is_array($labels))
 			{
 				$labels = array();
 			}
-			
+
 			//init `all_items_labels`
 			$all_items_labels = explode(",",$all_items_labels);
-			
+
 			if(!is_array($all_items_labels))
 			{
 				$all_items_labels = array();
 			}
-			
+
 			//init `types`
 			if($types!=null)
 			{
@@ -271,46 +271,46 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$types = explode(",",$type);
 			}
-			
+
 			if(!is_array($types))
 			{
 				$types = array();
 			}
-			
+
 			//init empty_search_url
-			
-			
+
+
 			//Loop through Fields and set up default vars
 			for($i=0; $i<$nofields; $i++)
 			{//loop through all fields
-				
+
 				//set up types
 				if(isset($types[$i]))
 				{
 					if($fields[$i] == 'post_date')
 					{//check for post date field
-					
+
 						if(($types[$i]!="date")&&($types[$i]!="daterange"))
-						{//if not expected value 
-							
+						{//if not expected value
+
 							$types[$i] = "date"; //use default
-						}						
+						}
 					}
 					else
 					{//everything else can use a standard form input - checkbox/radio/dropdown/list/multiselect
-					
+
 						if(($types[$i]!="select")&&($types[$i]!="checkbox")&&($types[$i]!="radio")&&($types[$i]!="list")&&($types[$i]!="multiselect"))
 						{//no accepted type matched - non compatible type defined by user
-						
+
 							$types[$i] =  "select"; //use default
 						}
 					}
 				}
 				else
 				{//omitted, so set default
-					
+
 					if($fields[$i] == 'post_date')
-					{						
+					{
 						$types[$i] =  "date";
 					}
 					else
@@ -318,20 +318,20 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 						$types[$i] =  "select";
 					}
 				}
-				
+
 				//setup labels
 				if(!isset($labels[$i]))
 				{
 					$labels[$i] = "";
 				}
-				
+
 				//setup all_items_labels
 				if(!isset($all_items_labels[$i]))
 				{
 					$all_items_labels[$i] = "";
 				}
-				
-				
+
+
 				if(isset($order_by[$i]))
 				{
 					if(($order_by[$i]!="id")&&($order_by[$i]!="name")&&($order_by[$i]!="slug")&&($order_by[$i]!="count")&&($order_by[$i]!="term_group"))
@@ -343,12 +343,12 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					$order_by[$i] =  "name"; //use default
 				}
-				
+
 				if(isset($order_dir[$i]))
 				{
 					if(($order_dir[$i]!="asc")&&($order_dir[$i]!="desc"))
 					{//then order_dir is not a wanted value
-						
+
 						$order_dir[$i] =  "asc"; //set to default
 					}
 				}
@@ -356,9 +356,11 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					$order_dir[$i] =  "asc"; //use default
 				}
-				
+
 				if(isset($operators[$i]))
 				{
+					$operators[$i] = strtolower($operators[$i]);
+
 					if(($operators[$i]!="and")&&($operators[$i]!="or"))
 					{
 						$operators[$i] =  "and"; //else use default - possible typo or use of unknown value
@@ -368,9 +370,8 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					$operators[$i] =  "and"; //use default
 				}
-			
 			}
-			
+
 			//set all form defaults / dropdowns etc
 			$this->set_defaults();
 
@@ -420,31 +421,31 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 			return $query;
 		}
-		
-		
+
+
 		function limit_date_range_query( $where )
 		{
 			global $wp_query;
-		
+
 			//get post dates into array
 			$post_date = explode("+", esc_attr(urlencode($wp_query->query['post_date'])));
-				
+
 			if (count($post_date) > 1 && $post_date[0] != $post_date[1])
 			{
 				$date_query = array();
-				
+
 				if (!empty($post_date[0]))
 				{
 					$date_query['after'] = date('Y-m-d 00:00:00', strtotime($post_date[0]));
 				}
-				
+
 				if (!empty($post_date[1]))
 				{
 					$date_query['before'] = date('Y-m-d 23:59:59', strtotime($post_date[1]));
 				}
-				
+
 			}
-			
+
 			// Append fragment to WHERE clause to select posts newer than the past week.
 			$where .= " AND post_date >='" . $date_query['after'] . "' AND post_date <='" . $date_query['before'] . "'";
 
@@ -461,19 +462,19 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 		function remove_limit_date_range_query()
 		{
 			remove_filter( 'posts_where', 'limit_date_range_query' );
-		}	
-		
+		}
+
 		function fix_blank_search($query)
 		{//needs to be re-implemented
-		
+
 			if((isset($_GET['s'])) && (empty($_GET['s'])) && ($query->is_main_query()))
 			{
 				$query->is_search = true;
 				$query->is_home = false;
 			}
-			
+
 		}
-		
+
 		function filter_query_post_date($query)
 		{
 			global $wp_query;
@@ -484,7 +485,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					//get post dates into array
 					$post_date = explode("+", esc_attr(urlencode($wp_query->query['post_date'])));
-					
+
 					if(!empty($post_date))
 					{
 						//if there is more than 1 post date and the dates are not the same
@@ -494,14 +495,14 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 							{
 								// Attach hook to filter WHERE clause.
 								add_filter('posts_where', array($this,'limit_date_range_query'));
-								
+
 								// Remove the filter after it is executed.
 								add_action('posts_selection', array($this,'remove_limit_date_range_query'));
 							}
 						}
 						else
 						{ //else we are dealing with one date or both dates are the same (so need to find posts for a single day)
-						
+
 							if (!empty($post_date[0]))
 							{
 								$post_time = strtotime($post_date[0]);
@@ -523,15 +524,15 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 		public function set_defaults()
 		{
 			global $wp_query;
-			
+
 			$categories = array();
-			
+
 			if(isset($wp_query->query['category_name']))
 			{
 				$category_params = (preg_split("/[,\+ ]/", esc_attr($wp_query->query['category_name']))); //explode with 2 delims
-								
+
 				//$category_params = explode("+",esc_attr($wp_query->query['category_name']));
-				
+
 				foreach($category_params as $category_param)
 				{
 					$category = get_category_by_slug( $category_param );
@@ -541,20 +542,20 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					}
 				}
 			}
-			
+
 			$this->defaults[SF_FPRE.'category'] = $categories;
 
 
 			//grab search term for prefilling search input
 			if(isset($wp_query->query['s']))
-			{//!"£$%^&*()
+			{//!"Â£$%^&*()
 				$this->searchterm = trim(get_search_query());
 			}
 
 			//check to see if tag is set
 
 			$tags = array();
-			
+
 			if(isset($wp_query->query['tag']))
 			{
 				$tag_params = (preg_split("/[,\+ ]/", esc_attr($wp_query->query['tag']))); //explode with 2 delims
@@ -569,10 +570,10 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					}
 				}
 			}
-			
+
 			$this->defaults[SF_FPRE.'post_tag'] = $tags;
 
-			$taxs = array();
+
 			//loop through all the query vars
 			foreach($wp_query->query as $key=>$val)
 			{
@@ -584,8 +585,10 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					{
 						$taxslug = ($val);
 						//$tax_params = explode("+",esc_attr($taxslug));
-						
+
 						$tax_params = (preg_split("/[,\+ ]/", esc_attr($taxslug))); //explode with 2 delims
+
+						$taxs = array();
 
 						foreach($tax_params as $tax_param)
 						{
@@ -612,15 +615,15 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				}
 			}
 			$this->defaults[SF_FPRE.'post_date'] = $post_date;
-			
-			
+
+
 			$post_types = array();
 			if(isset($wp_query->query['post_types']))
 			{
 				$post_types = explode(",",esc_attr($wp_query->query['post_types']));
 			}
 			$this->defaults[SF_FPRE.'post_types'] = $post_types;
-			
+
 		}
 
 		/*
@@ -637,7 +640,9 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					$this->has_form_posted = true;
 				}
 			}
-			
+
+			$taxcount = 0;
+
 			/* CATEGORIES */
 			if((isset($_POST[SF_FPRE.'category']))&&($this->has_form_posted))
 			{
@@ -658,7 +663,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					$cat = esc_attr($cat);
 					$catobj = get_category($cat);
-					
+
 					if(isset($catobj->slug))
 					{
 						$catarr[] = $catobj->slug;
@@ -669,15 +674,15 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				if(count($catarr)>0)
 				{
 					$operator = "+"; //default behaviour
-					
+
 					//check to see if an operator has been specified - only applies with fields that use multiple selects such as checkboxes or multi selects
 					if(isset($_POST[SF_FPRE.'category_operator']))
 					{
-						if($_POST[SF_FPRE.'category_operator']=="and")
+						if(strtolower($_POST[SF_FPRE.'category_operator'])=="and")
 						{
 							$operator = "+";
 						}
-						else if($_POST[SF_FPRE.'category_operator']=="or")
+						else if(strtolower($_POST[SF_FPRE.'category_operator'])=="or")
 						{
 							$operator = ",";
 						}
@@ -686,10 +691,10 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 							$operator = "+";
 						}
 					}
-					
+
 					$categories = implode($operator,$catarr);
 
-					if(get_option('permalink_structure'))
+					if(get_option('permalink_structure')&&($taxcount==0))
 					{
 						//$catrel = trim(str_replace(home_url(), "", get_category_link()), "/").$categories."/"; //get full category link, remvoe the home url to get relative, trim traling slashed, the append slash at the end
 						$category_base = (get_option( 'category_base' )=="") ? "category" : get_option( 'category_base' );
@@ -707,9 +712,193 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 						{
 							$this->urlparams .= "&";
 						}
+
 						$this->urlparams .= "category_name=".$categories;
 					}
+
+					$taxcount++;
 				}
+
+
+			}
+
+
+
+			/* TAGS */
+			if((isset($_POST[SF_FPRE.'post_tag']))&&($this->has_form_posted))
+			{
+				$the_post_tag = ($_POST[SF_FPRE.'post_tag']);
+
+				//make the post an array for easy looping
+				if(!is_array($_POST[SF_FPRE.'post_tag']))
+				{
+					$post_tag[] = $the_post_tag;
+				}
+				else
+				{
+					$post_tag = $the_post_tag;
+				}
+
+				$tagarr = array();
+
+				foreach ($post_tag as $tag)
+				{
+					$tag = esc_attr($tag);
+					$tagobj = get_tag($tag);
+
+					if(isset($tagobj->slug))
+					{
+						$tagarr[] = $tagobj->slug;
+					}
+				}
+
+				if(count($tagarr)>0)
+				{
+					$operator = "+"; //default behaviour
+
+					//check to see if an operator has been specified - only applies with fields that use multiple selects such as checkboxes or multi selects
+					if(isset($_POST[SF_FPRE.'post_tag_operator']))
+					{
+						if(strtolower($_POST[SF_FPRE.'post_tag_operator'])=="and")
+						{
+							$operator = "+";
+						}
+						else if(strtolower($_POST[SF_FPRE.'post_tag_operator'])=="or")
+						{
+							$operator = ",";
+						}
+						else
+						{
+							$operator = "+";
+						}
+					}
+
+					$tags = implode($operator,$tagarr);
+
+					if(get_option('permalink_structure')&&($taxcount==0))
+					{
+						$tag_path = "tag/".$tags."/";
+						$this->urlparams .= $tag_path;
+					}
+					else
+					{
+						if(!$this->hasqmark)
+						{
+							$this->urlparams .= "?";
+							$this->hasqmark = true;
+						}
+						else
+						{
+							$this->urlparams .= "&";
+						}
+						$this->urlparams .= "tag=".$tags;
+					}
+
+					$taxcount++;
+				}
+			}
+
+			//now we have dealt with the all the special case fields - search, tags, categories, post_types, post_date
+
+			//loop through the posts - double check that it is the search form that has been posted, otherwise we could be looping through the posts submitted from an entirely unrelated form
+			if($this->has_form_posted)
+			{
+				foreach($_POST as $key=>$val)
+				{
+
+					if(!in_array($key, $this->frmreserved))
+					{//if the key is not in the reserved array (ie, on a custom taxonomy - not tags, categories, search term, post type & post date)
+
+						// strip off all prefixes for custom fields - we just want to do a redirect - no processing
+						if (strpos($key, SF_FPRE) === 0)
+						{
+							$key = substr($key, strlen(SF_FPRE));
+						}
+
+						$the_post_tax = $val;
+
+						$post_tax = array();
+
+						//make the post an array for easy looping
+						if(!is_array($the_post_tax))
+						{
+							$post_tax[] = $the_post_tax;
+						}
+						else
+						{
+							$post_tax = $the_post_tax;
+						}
+
+						$taxarr = array();
+
+						foreach ($post_tax as $tax)
+						{
+							$tax = esc_attr($tax);
+							$taxobj = get_term_by('id', $tax, $key);
+
+							if(isset($taxobj->slug))
+							{
+								$taxarr[] = $taxobj->slug;
+							}
+						}
+
+						if(count($taxarr)>0)
+						{
+							$operator = "+"; //default behaviour
+
+							//check to see if an operator has been specified - only applies with fields that use multiple selects such as checkboxes or multi selects
+							if(isset($_POST[SF_FPRE.$key.'_operator']))
+							{
+								if(strtolower($_POST[SF_FPRE.$key.'_operator'])=="and")
+								{
+									$operator = "+";
+								}
+								else if(strtolower($_POST[SF_FPRE.$key.'_operator'])=="or")
+								{
+									$operator = ",";
+								}
+								else
+								{
+									$operator = "+";
+								}
+							}
+
+							$taxs = implode($operator,$taxarr);
+
+							//**due to some new wierd rewrite in WordPress, the first taxonomy which get rewritten to /taxonomyname/taxonomyvalue only uses the first value of an array - so do it manually
+							if(get_option('permalink_structure')&&($taxcount==0))
+							{
+								$key_taxonomy = get_taxonomy( $key );
+
+								$tax_path = $key."/".$taxs."/";
+								if((isset($key_taxonomy->rewrite))&&(isset($key_taxonomy->rewrite['slug'])))
+								{
+									$tax_path = $key_taxonomy->rewrite['slug']."/".$taxs."/";
+								}
+
+								$this->urlparams .= $tax_path;
+							}
+							else
+							{
+								if(!$this->hasqmark)
+								{
+									$this->urlparams .= "?";
+									$this->hasqmark = true;
+								}
+								else
+								{
+									$this->urlparams .= "&";
+								}
+								$this->urlparams .=  $key."=".$taxs;
+							}
+
+							$taxcount++;
+
+						}
+					}
+				}
+
+
 			}
 
 			/* SEARCH BOX */
@@ -734,12 +923,12 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			}
 			if(!$this->hassearchquery)
 			{
-				
+
 				if((isset($_POST[SF_FPRE.'add_search_param']))&&($this->has_form_posted))
 				{//this is only set when a search box is displayed - it tells S&F to append a blank search to the URL to indicate a search has been submitted with no terms, however, still load the search template
-					
-					
-					
+
+
+
 					if(!$this->hasqmark)
 					{
 						$this->urlparams .= "?";
@@ -752,73 +941,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					$this->urlparams .= "s=";
 				}
 			}
-			
-			/* TAGS */
-			if((isset($_POST[SF_FPRE.'post_tag']))&&($this->has_form_posted))
-			{
-				$the_post_tag = ($_POST[SF_FPRE.'post_tag']);
 
-				//make the post an array for easy looping
-				if(!is_array($_POST[SF_FPRE.'post_tag']))
-				{
-					$post_tag[] = $the_post_tag;
-				}
-				else
-				{
-					$post_tag = $the_post_tag;
-				}
-				
-				$tagarr = array();
-
-				foreach ($post_tag as $tag)
-				{
-					$tag = esc_attr($tag);
-					$tagobj = get_tag($tag);
-
-					if(isset($tagobj->slug))
-					{
-						$tagarr[] = $tagobj->slug;
-					}
-				}
-				
-				if(count($tagarr)>0)
-				{
-					$operator = "+"; //default behaviour
-						
-					//check to see if an operator has been specified - only applies with fields that use multiple selects such as checkboxes or multi selects
-					if(isset($_POST[SF_FPRE.'post_tag_operator']))
-					{
-						if($_POST[SF_FPRE.'post_tag_operator']=="and")
-						{
-							$operator = "+";
-						}
-						else if($_POST[SF_FPRE.'post_tag_operator']=="or")
-						{
-							$operator = ",";
-						}
-						else
-						{
-							$operator = "+";
-						}
-					}
-					
-					$tags = implode($operator,$tagarr);
-
-					if(!$this->hasqmark)
-					{
-						$this->urlparams .= "?";
-						$this->hasqmark = true;
-					}
-					else
-					{
-						$this->urlparams .= "&";
-					}
-					$this->urlparams .= "tag=".$tags;
-
-				}
-			}
-			
-			
 			/* POST TYPES */
 			if((isset($_POST[SF_FPRE.'post_types']))&&($this->has_form_posted))
 			{
@@ -847,26 +970,9 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				if(count($post_types_arr)>0)
 				{
 					$operator = ","; //default behaviour
-						
-					//check to see if an operator has been specified - only applies with fields that use multiple selects such as checkboxes or multi selects
-					/*if(isset($_POST[SF_FPRE.'post_types_operator']))
-					{
-						if($_POST[SF_FPRE.'post_types_operator']=="and")
-						{
-							$operator = "+";
-						}
-						else if($_POST[SF_FPRE.'post_types_operator']=="or")
-						{
-							$operator = ",";
-						}
-						else
-						{
-							$operator = "+";
-						}
-					}*/
-					
+
 					$post_types = implode($operator,$post_types_arr);
-					
+
 					if(!$this->hasqmark)
 					{
 						$this->urlparams .= "?";
@@ -880,8 +986,8 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 				}
 			}
-			
-			
+
+
 			/* POST DATE */
 			if((isset($_POST[SF_FPRE.'post_date']))&&($this->has_form_posted))
 			{
@@ -910,10 +1016,10 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				if(count($post_date_arr)>0)
 				{
 					$post_date_count = count($post_date_arr);
-					
+
 					if($post_date_count==2)
 					{//see if there are 2 elements in arr (second date range selector)
-					
+
 						if(($post_date_arr[0]!="")&&($post_date_arr[1]==""))
 						{
 							$post_date = $post_date_arr[0];
@@ -935,7 +1041,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					{
 						$post_date = $post_date_arr[0];
 					}
-					
+
 					if(isset($post_date))
 					{
 						if($post_date!="")
@@ -954,112 +1060,33 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					}
 				}
 			}
-			
-			
-			//now we have dealt with the all the special case fields - search, tags, categories, post_types, post_date
 
-			//loop through the posts - double check that it is the search form that has been posted, otherwise we could be looping through the posts submitted from an entirely unrelated form
-			if($this->has_form_posted)
-			{
-				foreach($_POST as $key=>$val)
-				{
-					if(!in_array($key, $this->frmreserved))
-					{//if the key is not in the reserved array (ie, on a custom taxonomy - not tags, categories, search term, post type & post date)
-						
-						// strip off all prefixes for custom fields - we just want to do a redirect - no processing
-						if (strpos($key, SF_FPRE) === 0)
-						{
-							$key = substr($key, strlen(SF_FPRE));
-						}
 
-						$the_post_tax = $val;
 
-						//make the post an array for easy looping
-						if(!is_array($val))
-						{
-							$post_tax[] = $the_post_tax;
-						}
-						else
-						{
-							$post_tax = $the_post_tax;
-						}
-						$taxarr = array();
-
-						foreach ($post_tax as $tax)
-						{
-							$tax = esc_attr($tax);
-							$taxobj = get_term_by('id',$tax,$key);
-
-							if(isset($taxobj->slug))
-							{
-								$taxarr[] = $taxobj->slug;
-							}
-						}
-						
-						
-						if(count($taxarr)>0)
-						{
-							$operator = "+"; //default behaviour
-					
-							//check to see if an operator has been specified - only applies with fields that use multiple selects such as checkboxes or multi selects
-							if(isset($_POST[SF_FPRE.$key.'_operator']))
-							{
-								if($_POST[SF_FPRE.$key.'_operator']=="and")
-								{
-									$operator = "+";
-								}
-								else if($_POST[SF_FPRE.$key.'_operator']=="or")
-								{
-									$operator = ",";
-								}
-								else
-								{
-									$operator = "+";
-								}
-							}
-						
-							$tags = implode($operator,$taxarr);
-
-							if(!$this->hasqmark)
-							{
-								$this->urlparams .= "?";
-								$this->hasqmark = true;
-							}
-							else
-							{
-								$this->urlparams .= "&";
-							}
-							$this->urlparams .=  $key."=".$tags;
-
-						}
-					}
-				}
-			}
-			
-			
 			if($this->has_form_posted)
 			{//if the search has been posted, redirect to the newly formed url with all the right params
-			
+
 				if($this->urlparams=="/")
 				{//check to see if url params are set, if not ("/") then add "?s=" to force load search results, without this it would redirect to the homepage, which may be a custom page with no blog items/results
 					$this->urlparams .= "?s=";
 				}
-				
+
 				if($this->urlparams=="/?s=")
 				{//if a blank search was submitted - need to check for this string here in case `add_search_param` has already added a "?s=" to the url
-				
+
 					if(isset($_POST[SF_FPRE.'empty_search_url']))
 					{//then redirect to the provided empty search url
-						
+
 						wp_redirect(esc_url($_POST[SF_FPRE.'empty_search_url']));
 						exit;
-					}				
+					}
 				}
-				
 				wp_redirect((home_url().$this->urlparams));
+				exit;
 			}
+
 		}
-	
+
 		public function get_search_filter_form($submitlabel, $search_placeholder, $fields, $types, $labels, $hierarchical, $hide_empty, $show_count, $post_types, $order_by, $order_dir, $operators, $all_items_labels, $empty_search_url, $add_search_param, $class)
 		{
 			$returnvar = '';
@@ -1089,11 +1116,11 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 						<ul>';
 
 						$i = 0;
-						
+
 						foreach($fields as $field)
 						{
 							//special cases - post_types & post_date.. all others assumed regular wp taxonomy
-							
+
 							if($field == "search")
 							{
 								$returnvar .=  '<li>';
@@ -1107,19 +1134,19 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 							}
 							else if($field == "post_types") //a post can only every have 1 type, so checkboxes & multiselects will always be "OR"
 							{//build field array
-							
+
 								//check to see if operator is set for this field
 								/*if(isset($operators[$i]))
 								{
 									$operators[$i] = strtolower($operators[$i]);
-									
+
 									if(($operators[$i]=="and")||($operators[$i]=="or"))
 									{
 										$returnvar .= '<input type="hidden" name="'.SF_FPRE.$field.'_operator" value="'.$operators[$i].'" />';
 									}
 								}*/
-								
-								
+
+
 								$returnvar .= $this->build_post_type_element($types, $labels, $post_types, $field, $all_items_labels, $i);
 
 							}
@@ -1128,7 +1155,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 								$returnvar .= $this->build_post_date_element($labels, $i, $types, $field);
 							}
 							else
-							{	
+							{
 								$returnvar .= $this->build_taxonomy_element($types, $labels, $field, $hierarchical, $hide_empty, $show_count, $order_by, $order_dir, $operators, $all_items_labels, $i);
 							}
 							$i++;
@@ -1136,18 +1163,18 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 						}
 
 						$returnvar .='<li>';
-						
+
 						if($add_search_param==1)
 						{
 							$returnvar .= "<input type=\"hidden\" name=\"".SF_FPRE."add_search_param\" value=\"1\" />";
 						}
-						
+
 						if($empty_search_url!="")
 						{
 							$returnvar .= "<input type=\"hidden\" name=\"".SF_FPRE."empty_search_url\" value=\"".esc_url($empty_search_url)."\" />";
 						}
-						
-						
+
+
 						$returnvar .=
 							'<input type="hidden" name="'.SF_FPRE.'submitted" value="1">
 							<input type="submit" value="'.$submitlabel.'">
@@ -1159,18 +1186,18 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 			return $returnvar;
 		}
-		
+
 		///////////////////////////////////////////////////////////
 		function build_post_date_element($labels, $i, $types, $field)
 		{
 			$returnvar = "";
-			
+
 			$taxonomychildren = array();
 
 			$taxonomychildren = (object)$taxonomychildren;
 
 			$returnvar .= "<li>";
-			
+
 			if($labels[$i]!="")
 			{
 				$returnvar .= "<h4>".$labels[$i]."</h4>";
@@ -1189,11 +1216,11 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				$returnvar .= $this->generate_date($taxonomychildren, $field, 1);
 			}
 			$returnvar .= "</li>";
-			
+
 			return $returnvar;
 		}
-		
-		
+
+
 		function build_post_type_element($types, $labels, $post_types, $field, $all_items_labels, $i)
 		{
 			$returnvar = "";
@@ -1234,7 +1261,6 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					foreach($post_types as $post_type)
 					{
-						//var_dump(get_post_type_object( $post_type ));
 						$post_type_data = get_post_type_object( $post_type );
 
 						if($post_type_data)
@@ -1256,7 +1282,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			$post_type_labels['name'] = "Post Types";
 			$post_type_labels['singular_name'] = "Post Type";
 			$post_type_labels['search_items'] = "Search Post Types";
-			
+
 			if($all_items_labels[$i]!="")
 			{
 				$post_type_labels['all_items'] = $all_items_labels[$i];
@@ -1272,7 +1298,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$returnvar .= "<h4>".$labels[$i]."</h4>";
 			}
-			
+
 			if($post_type_count>0)
 			{
 				$defaultval = implode(",",$post_types);
@@ -1288,7 +1314,6 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			}
 			else if($types[$i]=="checkbox")
 			{
-				
 				$returnvar .= $this->generate_checkbox($taxonomychildren, $field, $this->tagid);
 			}
 			else if($types[$i]=="radio")
@@ -1296,28 +1321,28 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				$returnvar .= $this->generate_radio($taxonomychildren, $field, $this->tagid, $post_type_labels, $defaultval);
 			}
 			$returnvar .= "</li>";
-			
+
 			return $returnvar;
 		}
-		
+
 		//gets all the data for the taxonomy then display as form element
 		function build_taxonomy_element($types, $labels, $taxonomy, $hierarchical, $hide_empty, $show_count, $order_by, $order_dir, $operators, $all_items_labels, $i)
 		{
 			$returnvar = "";
-			
+
 			$taxonomydata = get_taxonomy($taxonomy);
 
 			if($taxonomydata)
 			{
 				$returnvar .= "<li>";
-				
+
 				if($labels[$i]!="")
 				{
 					$returnvar .= "<h4>".$labels[$i]."</h4>";
 				}
 
 				$args = array(
-					'name' => SF_FPRE . $taxonomy,
+					'sf_name' => SF_FPRE . $taxonomy,
 					'taxonomy' => $taxonomy,
 					'hierarchical' => false,
 					'child_of' => 0,
@@ -1331,7 +1356,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					'show_option_all' => '',
 					'show_option_all_sf' => ''
 				);
-				
+
 				if(isset($hierarchical[$i]))
 				{
 					if($hierarchical[$i]==1)
@@ -1339,7 +1364,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 						$args['hierarchical'] = true;
 					}
 				}
-				
+
 				if(isset($hide_empty[$i]))
 				{
 					if($hide_empty[$i]==0)
@@ -1347,7 +1372,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 						$args['hide_empty'] = false;
 					}
 				}
-				
+
 				if(isset($show_count[$i]))
 				{
 					if($show_count[$i]==1)
@@ -1355,14 +1380,14 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 						$args['show_count'] = true;
 					}
 				}
-				
+
 				if($all_items_labels[$i]!="")
 				{
 					$args['show_option_all_sf'] = $all_items_labels[$i];
 				}
-				
-				
-				
+
+
+
 				$taxonomychildren = get_categories($args);
 
 				if($types[$i]=="select")
@@ -1373,55 +1398,57 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					$args['title_li'] = '';
 					$args['defaults'] = "";
-					if(isset($this->defaults[$args['name']]))
+					if(isset($this->defaults[$args['sf_name']]))
 					{
-						$args['defaults'] = $this->defaults[$args['name']];
+						$args['defaults'] = $this->defaults[$args['sf_name']];
 					}
 					//$args['show_option_all'] = 0;
-					
+
 					$returnvar .= $this->generate_wp_checkbox($args, $taxonomy, $this->tagid, $taxonomydata->labels);
 				}
 				else if($types[$i]=="radio")
 				{
 					$args['title_li'] = '';
 					$args['defaults'] = "";
-					if(isset($this->defaults[$args['name']]))
+
+					if(isset($this->defaults[$args['sf_name']]))
 					{
-						$args['defaults'] = $this->defaults[$args['name']];
+						$args['defaults'] = $this->defaults[$args['sf_name']];
 					}
-					
+
 					$returnvar .= $this->generate_wp_radio($args, $taxonomy, $this->tagid, $taxonomydata->labels);
 				}
 				else if($types[$i]=="multiselect")
 				{
 					$args['title_li'] = '';
 					$args['defaults'] = "";
-					if(isset($this->defaults[$args['name']]))
+
+					if(isset($this->defaults[$args['sf_name']]))
 					{
-						$args['defaults'] = $this->defaults[$args['name']];
+						$args['defaults'] = $this->defaults[$args['sf_name']];
 					}
-					
+
 					$returnvar .= $this->generate_wp_multiselect($args, $taxonomy, $this->tagid, $taxonomydata->labels);
 				}
-				
+
 				//check to see if operator is set for this field
 				if(isset($operators[$i]))
 				{
 					$operators[$i] = strtolower($operators[$i]);
-					
+
 					if(($operators[$i]=="and")||($operators[$i]=="or"))
 					{
 						$returnvar .= '<input type="hidden" name="'.SF_FPRE.$taxonomy.'_operator" value="'.$operators[$i].'" />';
 					}
 				}
-				
+
 				$returnvar .= "</li>";
 			}
-			
+
 			return $returnvar;
 		}
-		
-		
+
+
 		/*
 		 * Display various forms
 		*/
@@ -1429,8 +1456,10 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 		//use wp array walker to enable hierarchical display
 		public function generate_wp_dropdown($args, $name, $currentid = 0, $labels = null, $defaultval = "0")
 		{
+			$args['name'] = $args['sf_name'];
+
 			$returnvar = '';
-			
+
 			if($args['show_option_all_sf']=="")
 			{
 				$args['show_option_all'] = $labels->all_items != "" ? $labels->all_items : 'All ' . $labels->name;
@@ -1439,7 +1468,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$args['show_option_all'] = $args['show_option_all_sf'];
 			}
-			
+
 			if(isset($this->defaults[SF_FPRE.$name]))
 			{
 				$defaults = $this->defaults[SF_FPRE . $name];
@@ -1457,31 +1486,31 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 			return $returnvar;
 		}
-		
+
 		//use wp array walker to enable hierarchical display
 		public function generate_wp_multiselect($args, $name, $currentid = 0, $labels = null, $defaultval = "0")
 		{
-			$returnvar = '<select multiple="multiple" name="'.$args['name'].'[]" class="postform">';
+			$returnvar = '<select multiple="multiple" name="'.$args['sf_name'].'[]" class="postform">';
 			$returnvar .= walk_taxonomy('multiselect', $args);
 			$returnvar .= "</select>";
-			
+
 			return $returnvar;
 		}
-		
+
 		//use wp array walker to enable hierarchical display
 		public function generate_wp_checkbox($args, $name, $currentid = 0, $labels = null, $defaultval = "0")
 		{
 			$returnvar = '<ul>';
 			$returnvar .= walk_taxonomy('checkbox', $args);
 			$returnvar .= "</ul>";
-			
+
 			return $returnvar;
 		}
-		
+
 		//use wp array walker to enable hierarchical display
 		public function generate_wp_radio($args, $name, $currentid = 0, $labels = null, $defaultval = "0")
 		{
-			
+
 			if($args['show_option_all_sf']=="")
 			{
 				$show_option_all = $labels->all_items != "" ? $labels->all_items : 'All ' . $labels->name;
@@ -1490,16 +1519,16 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 			{
 				$show_option_all = $args['show_option_all_sf'];
 			}
-			
+
 			$checked = ($defaultval=="0") ? " checked='checked'" : "";
 			$returnvar = '<ul>';
-			$returnvar .= '<li>'."<label><input type='radio' name='".$args['name']."[]' value='0'$checked /> ".$show_option_all."</label>".'</li>';
+			$returnvar .= '<li>'."<label><input type='radio' name='".$args['sf_name']."[]' value='0'$checked /> ".$show_option_all."</label>".'</li>';
 			$returnvar .= walk_taxonomy('radio', $args);
 			$returnvar .= "</ul>";
-			
+
 			return $returnvar;
 		}
-		
+
 		//generate generic form inputs for use elsewhere, such as post types and non taxonomy fields
 		public function generate_select($dropdata, $name, $currentid = 0, $labels = null, $defaultval = "0")
 		{
@@ -1546,22 +1575,22 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 			return $returnvar;
 		}
-		
+
 		public function generate_checkbox($dropdata, $name, $currentid = 0, $labels = null, $defaultval = '')
 		{
 			$returnvar = '<ul>';
-			
+
 			foreach($dropdata as $dropdown)
 			{
 				$checked = "";
-				
+
 				//check a default has been set
 				if(isset($this->defaults[SF_FPRE.$name]))
 				{
 					$defaults = $this->defaults[SF_FPRE.$name];
-					
+
 					$noselected = count($defaults);
-					
+
 					if(($noselected>0)&&(is_array($defaults)))
 					{
 						foreach($defaults as $defaultid)
@@ -1574,19 +1603,19 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					}
 				}
 				$returnvar .= '<li class="cat-item"><label><input class="postform cat-item" type="checkbox" name="'.SF_FPRE.$name.'[]" value="'.$dropdown->term_id.'"'.$checked.'> '.$dropdown->cat_name.'</label></li>';
-			
+
 			}
-			
+
 			$returnvar .= '</ul>';
-			
+
 			return $returnvar;
 		}
-		
-		
+
+
 		public function generate_radio($dropdata, $name, $currentid = 0, $labels = null, $defaultval = "0")
 		{
 			$returnvar = '<ul>';
-			
+
 			if(isset($labels))
 			{
 				$checked = "";
@@ -1594,7 +1623,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					$defaults = $this->defaults[SF_FPRE.$name];
 					$noselected = count($defaults);
-					
+
 					if($noselected==0)
 					{
 						$checked = ' checked="checked"';
@@ -1611,7 +1640,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{
 					$checked = ' checked="checked"';
 				}
-				
+
 				if(isset($this->defaults[SF_FPRE.$name]))
 				{
 					$defaults = $this->defaults[SF_FPRE.$name];
@@ -1620,7 +1649,7 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 						$checked = ' checked="checked"';
 					}
 				}
-				
+
 				$all_items_name = "";
 				if($labels->all_items!="")
 				{//check to see if all items has been registered in field then use this label
@@ -1630,21 +1659,21 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 				{//check to see if all items has been registered in field then use this label with prefix of "All"
 					$all_items_name = "All ".$labels->name;
 				}
-				
+
 				$returnvar .= '<li class="cat-item"><label><input class="postform" type="radio" name="'.SF_FPRE.$name.'[]" value="'.$defaultval.'"'.$checked.'> '.$all_items_name.'</label></li>';
 			}
-			
+
 			foreach($dropdata as $dropdown)
 			{
 				$checked = "";
-				
+
 				//check a default has been set
 				if(isset($this->defaults[SF_FPRE.$name]))
 				{
 					$defaults = $this->defaults[SF_FPRE.$name];
-					
+
 					$noselected = count($defaults);
-					
+
 					if(($noselected==1)&&(is_array($defaults)))
 					{
 						foreach($defaults as $defaultid)
@@ -1657,32 +1686,32 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 					}
 				}
 				$returnvar .= '<li class="cat-item"><label><input class="postform" type="radio" name="'.SF_FPRE.$name.'[]" value="'.$dropdown->term_id.'"'.$checked.'> '.$dropdown->cat_name.'</label></li>';
-			
+
 			}
-			
+
 			$returnvar .= '</ul>';
-			
+
 			return $returnvar;
 		}
-		
+
 		public function generate_date($dropdata, $name, $currentid = 0, $labels = null, $defaultval = "0")
 		{
 			$returnvar = '';
 			$current_date = '';
-			//check a default has been set - upto two possible vars for array 
-			
+			//check a default has been set - upto two possible vars for array
+
 			if(isset($this->defaults[SF_FPRE.$name]))
 			{
 				$defaults = $this->defaults[SF_FPRE.$name];
-				
+
 				$noselected = count($defaults);
-				
+
 				if(($noselected>0)&&(is_array($defaults)))
 				{
 					$current_date = $defaults[$currentid];
 				}
 			}
-			
+
 			$returnvar .= '<input class="postform" type="date" name="'.SF_FPRE.$name.'[]" value="' . $current_date . '" />';
 
 			return $returnvar;
@@ -1693,8 +1722,10 @@ if ( ! class_exists( 'SearchAndFilter' ) )
 
 function walk_taxonomy( $type = "checkbox", $args = array() ) {
 
-	$args['walker'] = new Taxonomy_Walker($type, $args['name']);
-	
+	$args['walker'] = new Taxonomy_Walker($type, $args['sf_name']);
+
+	//unset($args['sf_name']);
+
 	$output = wp_list_categories($args);
 	if ( $output )
 		return $output;

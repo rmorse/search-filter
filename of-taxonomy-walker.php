@@ -12,7 +12,6 @@ class Taxonomy_Walker extends Walker_Category {
 	function __construct($type = 'checkbox', $defaults = array())  {
 		// fetch the list of term ids for the given post
 		//$this->term_ids = wp_get_post_terms( $post_id, $taxonomy, 'fields=ids' );
-		//var_dump($this->term_ids);
 		
 		$this->type = $type;
 		$this->defaults = $defaults;
@@ -47,8 +46,8 @@ class Taxonomy_Walker extends Walker_Category {
 		if($this->type=="list")
 		{
 			extract($args);
-
-			$cat_name = esc_attr( $category->name );
+			
+			$cat_name = esc_attr( $sf_name );
 			$cat_name = apply_filters( 'list_cats', $cat_name, $category );
 			$link = '<a href="' . esc_url( get_term_link($category) ) . '" ';
 			if ( $use_desc_for_title == 0 || empty($category->description) )
@@ -110,13 +109,14 @@ class Taxonomy_Walker extends Walker_Category {
 		else if(($this->type=="checkbox")||($this->type=="radio"))
 		{
 			extract($args);
-
+			
 			$cat_name = esc_attr( $category->name );
 			$cat_id = esc_attr( $category->term_id );
 			$cat_name = apply_filters( 'list_cats', $cat_name, $category );
 			
 			//check a default has been set
 			$checked = "";
+			
 			if($defaults)
 			{
 				$noselected = count($this->defaults);
@@ -133,7 +133,7 @@ class Taxonomy_Walker extends Walker_Category {
 				}
 			}
 			
-			$link = "<label><input type='".$this->type."' name='".$name."[]' value='".$cat_id."'".$checked." /> ".$cat_name;
+			$link = "<label><input type='".$this->type."' name='".$sf_name."[]' value='".$cat_id."'".$checked." /> ".$cat_name;
 
 			
 			if ( !empty($show_count) )
@@ -161,7 +161,7 @@ class Taxonomy_Walker extends Walker_Category {
 		else if($this->type=="multiselect")
 		{
 			extract($args);
-
+			
 			$cat_name = esc_attr( $category->name );
 			$cat_id = esc_attr( $category->term_id );
 			$cat_name = apply_filters( 'list_cats', $cat_name, $category );
@@ -225,7 +225,7 @@ class Taxonomy_Walker extends Walker_Category {
 			$pad = str_repeat('&nbsp;', $depth * 3);
 
 			$output .= "\t<option class=\"level-$depth\" value=\"".$category->term_id."\"";
-			$cat_name = apply_filters('list_cats', $category->name, $category);
+			$cat_name = apply_filters('list_cats', $category->sf_name, $category);
 			if ( $category->term_id == $args['selected'] )
 				$output .= ' selected="selected"';
 			$output .= '>';

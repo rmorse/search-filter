@@ -1,0 +1,14 @@
+{
+    "name": "wptailor/search-filter",
+    "description": "Search and Filtering for Custom Posts, Categories, Tags, Taxonomies, Post Dates and Post Types",
+    "type": "wordpress-plugin",
+    "license": "GPLv2",
+    "authors": [
+        {
+            "name": "Ivo Karadzhov",
+            "email": "ivo@ralev.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
