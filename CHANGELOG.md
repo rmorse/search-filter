@@ -4,6 +4,13 @@ CHANGELOG
 All notable changes to this project will be documented in this file.
 
 
+### [Unreleased]
+ - Better translation support
+ - Add option permalink: no permalink on taxonomy filtering
+ - Add support meta: support to render and filter postmeta
+
+
+
 ### 1.2.5
  - Fixed a PHP error when setting defaults for taxonomies - many users did not see this but resulted in unexpected behaviour
  - Fixed an error with post date sometimes being undefined for blank searches
