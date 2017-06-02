@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7a04604e-3461-44b7-8a35-5d3275be10b2" name="Default" comment="" />
+    <list default="true" id="7a04604e-3461-44b7-8a35-5d3275be10b2" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/search-filter.php" afterPath="$PROJECT_DIR$/search-filter.php" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,9 +18,11 @@
       <file leaf-file-name="search-filter.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/search-filter.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="7" column="14" lean-forward="false" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-              <folding />
+            <state relative-caret-position="414">
+              <caret line="1437" column="0" lean-forward="true" selection-start-line="1437" selection-start-column="0" selection-end-line="1437" selection-end-column="0" />
+              <folding>
+                <element signature="e#6#349#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -608,41 +613,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="196">
           <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
-          <folding>
-            <marker date="1496424241000" expanded="true" signature="1272:1388" ph="..." />
-            <marker date="1496424241000" expanded="true" signature="1295:1374" ph="{...}" />
-            <marker date="1496424241000" expanded="true" signature="1487:1492" ph="&amp;" />
-            <marker date="1496424241000" expanded="true" signature="1563:2178" ph="..." />
-            <marker date="1496424241000" expanded="false" signature="1576:1581" ph="&amp;" />
-            <marker date="1496424241000" expanded="false" signature="1725:1730" ph="&amp;" />
-            <marker date="1496424241000" expanded="true" signature="2287:2562" ph="..." />
-            <marker date="1496424241000" expanded="false" signature="2439:2444" ph="&amp;" />
-            <marker date="1496424241000" expanded="true" signature="2628:3255" ph="..." />
-            <marker date="1496424241000" expanded="false" signature="2652:2657" ph="&amp;" />
-            <marker date="1496424241000" expanded="false" signature="3144:3148" ph="&lt;" />
-            <marker date="1496424241000" expanded="false" signature="3229:3233" ph="&gt;" />
-            <marker date="1496424241000" expanded="true" signature="3480:3485" ph="&amp;" />
-            <marker date="1496424241000" expanded="true" signature="4238:4500" ph="..." />
-            <marker date="1496424241000" expanded="false" signature="4251:4256" ph="&amp;" />
-            <marker date="1496424241000" expanded="true" signature="4527:4532" ph="&amp;" />
-            <marker date="1496424241000" expanded="true" signature="4598:5516" ph="..." />
-            <marker date="1496424241000" expanded="false" signature="4886:4891" ph="&amp;" />
-            <marker date="1496424241000" expanded="false" signature="5155:5160" ph="&amp;" />
-            <marker date="1496424241000" expanded="false" signature="5187:5192" ph="&amp;" />
-            <marker date="1496424241000" expanded="false" signature="5360:5365" ph="&amp;" />
-            <marker date="1496424241000" expanded="false" signature="5374:5379" ph="&amp;" />
-            <marker date="1496424241000" expanded="true" signature="5579:6096" ph="..." />
-            <marker date="1496424241000" expanded="true" signature="5588:6086" ph="..." />
-            <marker date="1496424241000" expanded="false" signature="5726:5731" ph="&amp;" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/search-filter.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="7" column="14" lean-forward="false" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-          <folding />
+        <state relative-caret-position="414">
+          <caret line="1437" column="0" lean-forward="true" selection-start-line="1437" selection-start-column="0" selection-end-line="1437" selection-end-column="0" />
+          <folding>
+            <element signature="e#6#349#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
