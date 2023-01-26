@@ -1,10 +1,10 @@
 === Search & Filter ===
-Contributors: DesignsAndCode
+Contributors: DesignsAndCode, codeamp
 Donate link:
 Tags: category, filter, taxonomy, search, wordpress, post type, post date
 Requires at least: 3.5
-Tested up to: 3.9
-Stable tag: 1.2.5
+Tested up to: 6.1
+Stable tag: 1.2.16
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -17,13 +17,13 @@ Search and Filtering for Custom Posts, Categories, Tags, Taxonomies, Post Dates 
 
 You will find 'Search & Filter' menu in your WordPress admin panel.
 
-For basic usage, you can also have a look at the [plugin homepage](http://www.designsandcode.com/447/wordpress-search-filter-plugin-for-taxonomies/) or refer to the `Search & Filter` menu in your Wordpress admin panel.
+For basic usage, you can also have a look at the [documentation](https://free.searchandfilter.com/) or refer to the `Search & Filter` menu in your Wordpress admin panel.
 
 == Frequently Asked Questions ==
 
 = How can I xxxxx ? =
 
-The documentation has been updated to include examples almost all configurable options with screenshots - please refer to the [Search & Filter Docs](http://docs.designsandcode.com/search-filter/).
+The documentation has been updated to include examples almost all configurable options with screenshots - please refer to the [Search & Filter Docs](https://free.searchandfilter.com/).
 
 == Screenshots ==
 
@@ -33,6 +33,48 @@ The documentation has been updated to include examples almost all configurable o
 4. Example of Search & Filter using a post type filter
 
 == Changelog ==
+
+= 1.2.16 =
+* Fixed - a potential security issue with escaping
+* Fixed - add support for block editor themes which don't use `get_header()`
+* Fixed - prefixed classes to avoid conflicts with other plugins + themes
+
+= 1.2.15 = 
+* Fixed - a PHP 8 warning when using the taxonomy walker class - thanks @jules-colle + @superthin
+
+= 1.2.14 =
+* Admin notice added - Version 3 is coming soon - beta testers wanted + tons of improvements and changes coming - make sure you know what's in store.
+* Update docs URLs
+* Fix - an issue with an `<option>` element self  closing in the multiselect field (thanks @matzeatweb)
+
+= 1.2.13 =
+* Fix - a PHP warning when using Beaver Builder
+
+= 1.2.12 =
+* Fixed - some PHP warnings when using radio, checkbox and multiselects
+* Fixed - a typo (thanks sunjunkie)
+* Tested with WP 5.3
+
+= 1.2.11 =
+* Fixed - a few typos in the admin screen
+* Tested with WP 5.0 RC2
+
+= 1.2.10 =
+* Fixed - an issue with our syntax highlighting script modifying our shortcodes
+
+= 1.2.9 =
+* Fixed - bugs with WP 4.4 compatibility
+* Fixed - an issue with operators being case sensitive - they are no longer case sensitive
+
+= 1.2.8 =
+* Fixed - an issue with rewrites - thanks [@iohannis](https://wordpress.org/support/profile/iohannis)
+
+= 1.2.7 =
+* Fixed - fix for new taxonomy rewrites and problems with multiple selection when using checkboxes
+* Fixed - added previously hidden `multiselect` field type
+
+= 1.2.6 =
+* Fixed - compatibility issues with WP 4.2.x
 
 = 1.2.5 =
 * Fixed a PHP error when setting defaults for taxonomies - many users did not see this but resulted in unexpected behaviour
@@ -82,7 +124,7 @@ The documentation has been updated to include examples almost all configurable o
 
 = 1.1.2 =
 * Added support for all public and custom post types (the `attachment` post type is excluded) - all post types can be user searchable or predfined and hidden from the user.  This allows for users to add multiple search widgets to their site which work on specific post types independantly from eachother.
-* Added offical updated documentation, created and moved to [Search & Filter Docs](http://docs.designsandcode.com/search-filter/)
+* Added offical updated documentation, created and moved to [Search & Filter Docs](https://free.searchandfilter.com/)
 
 = 1.1.1 =
 * Fixed: when submitting an empty search/filter, "?s=" now gets appended to the url (an empty search) to force load a results page, previously this was redirecting to the homepage which does not work for many use cases
@@ -109,17 +151,37 @@ The documentation has been updated to include examples almost all configurable o
 
 == Upgrade Notice ==
 
-* WARNING - this update includes some major changes to shortcode construction,  do not upgrade until you have read the changelog and how this will affect your setup - updating should be easy.
+= 1.1.0 =
+* This update includes some major changes to shortcode construction,  do not upgrade until you have read the changelog and how this will affect your setup - updating should be easy.
 
 == Description ==
 
-Search & Filter is a simple search and filtering plugin for WordPress.  It is essentially an advancement of the WordPress search box, adding taxonomy, post type and post date filters to really refine your searches.
+Search & Filter is a simple search and filtering plugin for WordPress - it is an advancement of the WordPress search box.
 
-You can search by Category, Tag, Custom Taxonomy, Post Type, Post Date or any combination of these easily - you can even remove the search box and simply use it as a filtering system for your posts and pages.  Taxonomies and Post Types can be displayed as dropdown selects, checkboxes, radio buttons or multi selects.
+You can search by Category, Tag, Custom Taxonomy, Post Type, Post Date or any combination of these easily to really refine your searches - remove the search box and use it as a filtering system for your posts and pages.  Fields can be displayed as dropdowns, checkboxes, radio buttons or multi selects.
 
-= Links =
+**Links:** [Search & Filter Documentation](https://free.searchandfilter.com/) | [Follow us on Twitter](https://twitter.com/code_amp/)
 
-* [Search & Filter Documentation](http://docs.designsandcode.com/search-filter/)
-* [Search & Filter Discussion](http://www.designsandcode.com/447/wordpress-search-filter-plugin-for-taxonomies/)
+== Get more features with Search & Filter Pro ==
+ 
+
+* View live demo >> [demo 1](https://demo.searchandfilter.com/movies/) |  [demo 2](http://demo.designsandcode.com/sfpro-woo-mystile/product-search/)  |  [video](https://searchandfilter.com/)
+* Search **Custom Fields**, **Post Meta**, **Authors**, Post Types, Post Dates, Taxonomies, Tags, Categories
+* Use **AJAX** to display results  - no more page reloading!
+* Search **Post Meta/Custom Fields** with checkboxes, radio buttons, dropdowns, multiselects or comboboxes
+* jQuery range slider, date pickers and **auto-complete comboboxes** for selects and multiselects
+* Order Results Field - users can order results by meta value, Post ID, author, title, name, date, date modified, parent ID, random, comment count and menu order
+* Drag & Drop editor
+* Use custom templates
+* Create as many fields and different search forms as you like
+* Use for blogs, reviews sites, news sites, property sites and more.
+* Use for your online shop - tested and compatible with **WooCommerce**, **WP eCommerce**, **Easy Digital Downloads**
+* Place anywhere in your themes and posts using shortcodes and widgets
+* Works with **WPML**
+* Works with **Advanced Custom Fields**
+* Extremely easy to use admin UI, fully integrated with WP 3.8+
+* **Dedicated Support**
+* [More info >>](https://searchandfilter.com/)
+
 
 

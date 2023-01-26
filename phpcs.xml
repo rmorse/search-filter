@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="SearchAndFilter">
+    <rule ref="WordPress">
+        <!-- exclude the filename restrictions assocatied with class name - we're using namespaces so we shouldn't have to do this -->
+        <exclude name="WordPress.Files.FileName"/>
+        <exclude name="WordPress.PHP.YodaConditions.NotYoda"/>
+        <exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores"/>
+    </rule>
+</ruleset>
